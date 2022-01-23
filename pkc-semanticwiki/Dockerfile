@@ -1,5 +1,5 @@
-FROM mediawiki:1.37
-# FROM mediawiki:1.35.2
+# FROM mediawiki:1.37
+FROM mediawiki:1.35.2
 # FROM mediawiki:latest
 
 # Define the ResourceBasePath in MediaWiki as a variable name: ResourceBasePath
