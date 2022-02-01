@@ -1,5 +1,5 @@
 # FROM mediawiki:1.37
-FROM mediawiki:1.35.3
+FROM mediawiki:1.35.2
 # FROM mediawiki:latest
 
 # Define the ResourceBasePath in MediaWiki as a variable name: ResourceBasePath
@@ -229,9 +229,6 @@ WORKDIR ${ResourceBasePath}/extensions/PluggableAuth
 COPY ./extensions/OpenIDConnect ${ResourceBasePath}/extensions/OpenIDConnect
 WORKDIR ${ResourceBasePath}/extensions/OpenIDConnect
 RUN composer install
-
-# Add LUA Semantics Scribunto
-
 
 # Go to the ${ResourceBasePath} for working directory
 WORKDIR ${ResourceBasePath}

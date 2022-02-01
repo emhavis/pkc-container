@@ -5,7 +5,7 @@ build:
 
 buildAndPush:
 	docker build -t emhavis/pkc_semanticwiki --build-arg BUILD_SMW=false .
-	docker push emhavis/pkc_semanticwiki:v0.3
+	docker push emhavis/pkc_semanticwiki:v0.4
 
 buildAndPushSMW: 
 	docker build -t emhavis/pkc_semanticwiki --build-arg BUILD_SMW=true .
