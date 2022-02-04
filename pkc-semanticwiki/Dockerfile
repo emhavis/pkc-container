@@ -10,6 +10,8 @@ ARG BUILD_SMW
 # Make sure that existing software are updated 
 RUN apt-get update -y
 #RUN apt-get install -y zlibc
+# Added, install LUA 5.1
+RUN apt-get install -y lua5.1
 RUN apt-get install -y zip unzip
 RUN apt update
 RUN apt-get install -y ghostscript
@@ -29,6 +31,7 @@ RUN apt-get upgrade
 #RUN apt-get install -y composer
 # Change file read/write access for the images directory
 RUN chmod -R 777 ${ResourceBasePath}/images
+# Added, for ARM64 Compatibility
 
 # Define working directory for the following commands
 #WORKDIR ${ResourceBasePath}/extensions
@@ -231,6 +234,7 @@ WORKDIR ${ResourceBasePath}/extensions/OpenIDConnect
 RUN composer install
 
 # Add LUA Semantics Scribunto
+
 
 
 # Go to the ${ResourceBasePath} for working directory

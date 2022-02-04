@@ -1,24 +1,24 @@
 CURRENT_TIME = $(shell date +'%y.%m.%d %H:%M:%S')
 
 build: 
-	docker build -t emhavis/pkc_semanticwiki:v0.4 --build-arg BUILD_SMW=true .
+	docker build -t emhavis/pkc_semanticwiki:v0.6 --build-arg BUILD_SMW=true .
 
 buildAndPush:
 	docker build -t emhavis/pkc_semanticwiki --build-arg BUILD_SMW=false .
-	docker push emhavis/pkc_semanticwiki:v0.4
+	docker push emhavis/pkc_semanticwiki:v0.6
 
 buildAndPushSMW: 
 	docker build -t emhavis/pkc_semanticwiki --build-arg BUILD_SMW=true .
 	docker push emhavis/pkc_semanticwiki
 
 push:
-	docker push emhavis/pkc_semanticwiki:v0.3
+	docker push emhavis/pkc_semanticwiki:v0.6
 
 build_no_cache: 
 	docker build --no-cache -t emhavis/pkc_semanticwiki:v0.2 .
 
 push_no_cache: 
-	docker push emhavis/pkc_semanticwiki:v0.2
+	docker push emhavis/pkc_semanticwiki:v0.6
 
 commitToGitHub:
 	git add .
