@@ -55,6 +55,9 @@ abstract class ApiStatsQuery extends ApiQueryBase {
 			}
 
 			$data = $this->makeItem( $item, $stats );
+			if ( $data === null ) {
+				continue;
+			}
 			$result->addValue( [ 'query', $this->getModuleName() ], null, $data );
 		}
 
@@ -62,7 +65,7 @@ abstract class ApiStatsQuery extends ApiQueryBase {
 
 		if ( $incomplete ) {
 			DeferredUpdates::addCallableUpdate( function () use ( $target ): void {
-				$jobQueue = JobQueueGroup::singleton();
+				$jobQueue = TranslateUtils::getJobQueueGroup();
 				$jobQueue->push( $this->getCacheRebuildJob( $target ) );
 			} );
 		}

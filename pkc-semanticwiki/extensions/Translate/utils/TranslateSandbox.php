@@ -195,7 +195,8 @@ class TranslateSandbox {
 	public static function sendEmail( User $sender, User $target, $type ) {
 		global $wgNoReplyAddress;
 
-		$targetLang = $target->getOption( 'language' );
+		$userOptionsLookup = MediaWikiServices::getInstance()->getUserOptionsLookup();
+		$targetLang = $userOptionsLookup->getOption( $target, 'language' );
 
 		switch ( $type ) {
 			case 'reminder':
@@ -242,7 +243,7 @@ class TranslateSandbox {
 			'emailType' => $type,
 		];
 
-		JobQueueGroup::singleton()->push( TranslateSandboxEmailJob::newJob( $params ) );
+		TranslateUtils::getJobQueueGroup()->push( TranslateSandboxEmailJob::newJob( $params ) );
 	}
 
 	/**

@@ -41,8 +41,7 @@ class ApiManageMessageGroupsTest extends ApiTestCase {
 		$title = Title::makeTitle( $group->getNamespace(),
 			TranslateUtils::title( 'keyDeleted', 'en-gb', $group->getNamespace() ) );
 		$content = ContentHandler::makeContent( 'world 23', $title );
-		TranslateUtils::doPageEdit(
-			WikiPage::factory( $title ),
+		WikiPage::factory( $title )->doUserEditContent(
 			$content,
 			self::getTestSysop()->getUser(),
 			__METHOD__
@@ -140,11 +139,11 @@ class ApiManageMessageGroupsTest extends ApiTestCase {
 
 		$this->assertArrayHasKey( 'key', $deletedMsg, 'previously renamed message is ' .
 			' updated when an add as new operation is performed.' );
-		$this->assertEquals( $deletedMsg['key'], 'renameDeleted' );
+		$this->assertEquals( 'renameDeleted', $deletedMsg['key'] );
 
 		$this->assertArrayHasKey( 'key', $addedMsg, 'previously renamed message is ' .
 		' updated when an add as new operation is performed.' );
-		$this->assertEquals( $addedMsg['key'], 'renameAdded' );
+		$this->assertEquals( 'renameAdded', $addedMsg['key'] );
 
 		$deletedMsg = $sourceChanges->findMessage( 'en-gb', 'renameDeleted',
 			[ MessageSourceChange::DELETION ] );

@@ -13,6 +13,7 @@ use MediaWiki\Extension\Translate\Cache\PersistentDatabaseCache;
 use MediaWiki\Extension\Translate\PageTranslation\TranslatablePageMover;
 use MediaWiki\Extension\Translate\PageTranslation\TranslatablePageParser;
 use MediaWiki\Extension\Translate\PageTranslation\TranslationUnitStoreFactory;
+use MediaWiki\Extension\Translate\Statistics\ProgressStatsTableFactory;
 use MediaWiki\Extension\Translate\Statistics\TranslationStatsDataProvider;
 use MediaWiki\Extension\Translate\Statistics\TranslatorActivity;
 use MediaWiki\Extension\Translate\Statistics\TranslatorActivityQuery;
@@ -23,7 +24,6 @@ use MediaWiki\Extension\Translate\TranslatorSandbox\TranslationStashReader;
 use MediaWiki\Extension\Translate\TranslatorSandbox\TranslationStashStorage;
 use MediaWiki\Extension\Translate\TtmServer\TtmServerFactory;
 use MediaWiki\Extension\Translate\Utilities\ConfigHelper;
-use MediaWiki\Extension\Translate\Utilities\Json\JsonCodec;
 use MediaWiki\Extension\Translate\Utilities\ParsingPlaceholderFactory;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
@@ -45,7 +45,11 @@ return [
 		return new EntitySearch(
 			$services->getMainWANObjectCache(),
 			$collation,
-			MessageGroups::singleton()
+			MessageGroups::singleton(),
+			$services->getNamespaceInfo(),
+			$services->get( 'Translate:MessageIndex' ),
+			$services->getTitleParser(),
+			$services->getTitleFormatter()
 		);
 	},
 
@@ -55,7 +59,7 @@ return [
 		return new ExternalMessageSourceStateImporter(
 			$services->getMainConfig(),
 			$services->get( 'Translate:GroupSynchronizationCache' ),
-			JobQueueGroup::singleton(),
+			TranslateUtils::getJobQueueGroup(),
 			LoggerFactory::getInstance( 'Translate.GroupSynchronization' ),
 			MessageIndex::singleton()
 		);
@@ -67,8 +71,15 @@ return [
 		return new GroupSynchronizationCache( $services->get( 'Translate:PersistentCache' ) );
 	},
 
-	'Translate:JsonCodec' => static function (): JsonCodec {
-		return new JsonCodec();
+	'Translate:MessageIndex' => static function ( MediaWikiServices $services ): MessageIndex {
+		$params = $services->getMainConfig()->get( 'TranslateMessageIndex' );
+		if ( is_string( $params ) ) {
+			$params = (array)$params;
+		}
+
+		$class = array_shift( $params );
+		// @phan-suppress-next-line PhanTypeExpectedObjectOrClassName
+		return new $class( $params );
 	},
 
 	'Translate:ParsingPlaceholderFactory' => static function (): ParsingPlaceholderFactory {
@@ -78,17 +89,23 @@ return [
 	'Translate:PersistentCache' => static function ( MediaWikiServices $services ): PersistentCache {
 		return new PersistentDatabaseCache(
 			$services->getDBLoadBalancer(),
-			// TODO: Since we have a similar interface, see if we can load the JsonCodec
-			// from the core here if available
-			$services->get( 'Translate:JsonCodec' )
+			$services->getJsonCodec()
 		 );
+	},
+
+	'Translate:ProgressStatsTableFactory' => static function ( MediaWikiServices $services ): ProgressStatsTableFactory
+	{
+		return new ProgressStatsTableFactory(
+			$services->getLinkRenderer(),
+			$services->get( 'Translate:ConfigHelper' )
+		);
 	},
 
 	'Translate:TranslatablePageMover' => static function ( MediaWikiServices $services ): TranslatablePageMover
 	{
 		return new TranslatablePageMover(
 			$services->getMovePageFactory(),
-			JobQueueGroup::singleton(),
+			TranslateUtils::getJobQueueGroup(),
 			$services->getLinkBatchFactory(),
 			$services->getMainConfig()->get( 'TranslatePageMoveLimit' )
 		);
@@ -134,8 +151,7 @@ return [
 		return new TranslatorActivity(
 			$services->getMainObjectStash(),
 			$query,
-			JobQueueGroup::singleton(),
-			$services->getLanguageNameUtils()
+			TranslateUtils::getJobQueueGroup()
 		);
 	},
 

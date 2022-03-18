@@ -239,6 +239,7 @@
 	"supportedlanguages-count": "On [[Special:ActiveLanguages]]\n*$1 is the total number of supported languages.",
 	"supportedlanguages-activity": "Used as tooltip text for username in users list, to show user's activity.\n\nSee [{{canonicalurl:Special:ActiveLanguages}}#fr example].\n\nParameters:\n* $1 - username\n* $2 - number of edits the user made\n* $3 - number of days",
 	"translate-supportedlanguages-cached": "Notice shown in [[Special:ActiveLanguages]].\n\nParameters:\n*$1 is formatted time, such as '5 minutes'",
+	"translate-activelanguages-invalid-code": "Error message shown on Special:ActiveLanguages.\nParameters:\n* $1 - language code",
 	"abusefilter-edit-builder-vars-translate-source-text": "Description for an [[mw:Extension:AbuseFilter|AbuseFilter]] variable. Used as an abuse filter syntax option in a dropdown from the group {{msg-mw|abusefilter-edit-builder-group-vars}}.",
 	"abusefilter-edit-builder-vars-translate-target-language": "Description for an [[mw:Extension:AbuseFilter|AbuseFilter]] variable. Used as an abuse filter syntax option in a dropdown from the group {{msg-mw|abusefilter-edit-builder-group-vars}}.",
 	"translate-jssti-add": "Name of button in [[Special:Preferences]], tab Editing.",
@@ -356,9 +357,10 @@
 	"translate-msggroupselector-search-recent": "A tab label in the message group selector that shows groups that were recently translated by the user.\n{{Identical|Recent}}",
 	"translate-msggroupselector-view-subprojects": "Label indicating that the current message group contains other groups. Parameters:\n* $1 is number of sub groups",
 	"tux-languageselector": "Label for language selector in [[Special:Translate]].\n{{Identical|Translate}}",
+	"tux-select-target-language": "Accessibility label for language selector on [[Special:Translate]].",
 	"tux-tab-all": "Tab in [[Special:Translate]] new ui to select which messages to show.\n{{Identical|All}}",
 	"tux-tab-untranslated": "Tab in [[Special:Translate]] new ui to select which messages to show.\n{{Identical|Untranslated}}",
-	"tux-tab-outdated": "Tab in [[Special:Translate]] new ui to select which messages to show.\n{{Identical|Outdated}}",
+	"tux-tab-outdated": "Tab in [[Special:Translate]] UI to select which messages to show.\n{{Identical|Outdated}}",
 	"tux-tab-translated": "Tab in the new interface for [[Special:Translate]], to select which kind of messages to show.\n{{Identical|Translated}}",
 	"tux-tab-unproofread": "Tab in [[Special:Translate]] new ui to select which messages to show.\n\n\"Unreviewed\" stands for \"(messages which) have not been reviewed\".\n{{Identical|Unreviewed}}",
 	"tux-edit": "Link in [[Special:Translate]] to open message editor.\n{{Identical|Edit}}",
@@ -369,7 +371,8 @@
 	"tux-status-saving": "Status label in [[Special:Translate]] indicating that the translation is being saved.\n{{Identical|Saving}}",
 	"tux-status-unsaved": "Status label in [[Special:Translate]] indicating that the translation is not saved yet.",
 	"tux-save-unknown-error": "Error message shown on [[Special:Translate]] when an unknown error occurs while attempting to save the translation.",
-	"tux-editor-placeholder": "Placeholder text for the translation editor textbox",
+	"tux-editor-placeholder-documentation": "Placeholder text for the translation editor textbox if target language is message documentation",
+	"tux-editor-placeholder-language": "Placeholder text for the translation editor textbox if target language is not message documentation. Parameters:\n* $1 - Language name",
 	"tux-editor-editsummary-placeholder": "Placeholder text for the translation editor's edit summary box",
 	"tux-editor-paste-original-button-label": "Label for a button that pastes the text in the source language to the translation editor.",
 	"tux-editor-discard-changes-button-label": "Label for a button that discards the changes made to a translation and restores the saved version.",
@@ -455,5 +458,6 @@
 	"translate-messagebundle-error-key-too-long": "Error message.\n* $1 - message key",
 	"translate-messagebundle-error-key-invalid-characters": "Error message.\n* $1 - message key",
 	"translate-messagebundle-error-invalid-value": "Error message.\n* $1 - message key",
-	"translate-messagebundle-error-empty-value": "Error message.\n* $1 - message key"
+	"translate-messagebundle-error-empty-value": "Error message.\n* $1 - message key",
+	"translate-messagebundle-group-description": "Group description for message bundle message groups.\n\nParameters:\n* $1 - the message bundle page title\n* $2 - the message bundle source page usable as link target"
 }

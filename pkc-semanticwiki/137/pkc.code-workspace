@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "../../../pkc-project-root/DockerizedMediaWiki"
+		},
+		{
+			"path": "../../../pkc-project-root/PKC"
+		},
+		{
+			"path": "../.."
+		}
+	]
+}

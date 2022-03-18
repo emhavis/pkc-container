@@ -204,6 +204,7 @@
 	"supportedlanguages-count": "$1 {{PLURAL:$1|language|languages}} in total.",
 	"supportedlanguages-activity": "$1: $2 {{PLURAL:$2|edit|edits}} - last edit $3 {{PLURAL:$3|day|days}} ago",
 	"translate-supportedlanguages-cached": "This information was cached $1 ago.",
+	"translate-activelanguages-invalid-code": "Language code \"$1\" is unknown or not enabled for translation.",
 	"abusefilter-edit-builder-vars-translate-source-text": "Source text of translation unit",
 	"abusefilter-edit-builder-vars-translate-target-language": "Target language for translation",
 	"translate-jssti-add": "Add to list",
@@ -321,6 +322,7 @@
 	"translate-msggroupselector-search-recent": "Recent",
 	"translate-msggroupselector-view-subprojects": "$1 {{PLURAL:$1|subgroup|subgroups}}",
 	"tux-languageselector": "Translate to",
+	"tux-select-target-language": "Target language for translation",
 	"tux-tab-all": "All",
 	"tux-tab-untranslated": "Untranslated",
 	"tux-tab-outdated": "Outdated",
@@ -334,7 +336,8 @@
 	"tux-status-saving": "Publishing...",
 	"tux-status-unsaved": "Unpublished",
 	"tux-save-unknown-error": "Unknown error occurred.",
-	"tux-editor-placeholder": "Your translation",
+	"tux-editor-placeholder-documentation": "Add message documentation",
+	"tux-editor-placeholder-language": "Your translation in $1",
 	"tux-editor-editsummary-placeholder": "Optional summary",
 	"tux-editor-paste-original-button-label": "Paste source text",
 	"tux-editor-discard-changes-button-label": "Discard changes",
@@ -420,5 +423,6 @@
 	"translate-messagebundle-error-key-too-long": "Key \"$1\" is too long",
 	"translate-messagebundle-error-key-invalid-characters": "Key \"$1\" contains disallowed characters",
 	"translate-messagebundle-error-invalid-value": "Key \"$1\" does not contain string value",
-	"translate-messagebundle-error-empty-value": "Key \"$1\" does not have a value"
+	"translate-messagebundle-error-empty-value": "Key \"$1\" does not have a value",
+	"translate-messagebundle-group-description": "Messages of a message bundle defined on page [[$2|$1]]."
 }

@@ -76,6 +76,8 @@
 				}
 			} );
 
+			mw.hook( 'mw.translate.translationView.stateChange' ).fire( state );
+
 			if ( uri.toString() === window.location.href ) {
 				return;
 			}
@@ -254,9 +256,16 @@
 		var ulsOptions = {
 			languages: mw.config.get( 'wgTranslateLanguages' ),
 			showRegions: [ 'SP' ].concat( $.fn.lcd.defaults.showRegions ),
-			onSelect: function ( language ) {
-				mw.translate.changeLanguage( language );
-				$element.text( $.uls.data.getAutonym( language ) );
+			onSelect: function ( languageCode ) {
+				var languageDetails = mw.translate.getLanguageDetailsForHtml( languageCode );
+				mw.translate.changeLanguage( languageCode );
+				$element
+					.find( '.ext-translate-target-language' )
+					.text( languageDetails.autonym )
+					.prop( {
+						lang: languageDetails.code,
+						dir: languageDetails.direction
+					} );
 			},
 			ulsPurpose: 'translate-special-translate',
 			quickList: function () {
@@ -345,6 +354,8 @@
 				setupLanguageSelector( $target );
 				$target.trigger( 'click' );
 			} );
+		} ).on( 'keypress', function () {
+			$( this ).trigger( 'click' );
 		} );
 
 		if ( $.fn.translateeditor ) {

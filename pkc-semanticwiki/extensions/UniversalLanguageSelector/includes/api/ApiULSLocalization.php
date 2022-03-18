@@ -18,10 +18,35 @@
  * @license MIT
  */
 
+namespace UniversalLanguageSelector\Api;
+
+use ApiBase;
+use ApiFormatRaw;
+use ApiMain;
+use MediaWiki\Languages\LanguageNameUtils;
+use UniversalLanguageSelector\ULSJsonMessageLoader;
+use Wikimedia\ParamValidator\ParamValidator;
+
 /**
  * @ingroup API
  */
 class ApiULSLocalization extends ApiBase {
+	/** @var LanguageNameUtils */
+	private $languageNameUtils;
+
+	/**
+	 * @param ApiMain $main
+	 * @param string $action
+	 * @param LanguageNameUtils $languageNameUtils
+	 */
+	public function __construct(
+		ApiMain $main,
+		$action,
+		LanguageNameUtils $languageNameUtils
+	) {
+		parent::__construct( $main, $action );
+		$this->languageNameUtils = $languageNameUtils;
+	}
 
 	public function execute() {
 		$this->getMain()->setCacheMode( 'public' );
@@ -29,7 +54,7 @@ class ApiULSLocalization extends ApiBase {
 
 		$params = $this->extractRequestParams();
 		$language = $params['language'];
-		if ( !Language::isValidCode( $language ) ) {
+		if ( !$this->languageNameUtils->isValidCode( $language ) ) {
 			$this->dieWithError( [ 'apierror-invalidlang', 'language' ], 'invalidlanguage' );
 		}
 		$contents = ULSJsonMessageLoader::getMessages( $language );
@@ -48,8 +73,8 @@ class ApiULSLocalization extends ApiBase {
 	public function getAllowedParams() {
 		return [
 			'language' => [
-				ApiBase::PARAM_REQUIRED => true,
-				ApiBase::PARAM_TYPE => 'string',
+				ParamValidator::PARAM_REQUIRED => true,
+				ParamValidator::PARAM_TYPE => 'string',
 			],
 		];
 	}

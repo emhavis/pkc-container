@@ -178,7 +178,11 @@ class ApiTranslateSandbox extends ApiBase {
 			return;
 		}
 
-		$languagePrefs = FormatJson::decode( $user->getOption( 'translate-sandbox' ), true );
+		$userOptionsLookup = MediaWikiServices::getInstance()->getUserOptionsLookup();
+		$languagePrefs = FormatJson::decode(
+			$userOptionsLookup->getOption( $user, 'translate-sandbox' ),
+			true
+		);
 		$languages = implode( '|', $languagePrefs[ 'languages' ] ?? [] );
 		$babeltext = "{{#babel:$languages}}";
 		$summary = $this->msg( 'tsb-create-user-page' )->inContentLanguage()->text();
@@ -186,7 +190,7 @@ class ApiTranslateSandbox extends ApiBase {
 		$page = WikiPage::factory( $userpage );
 		$content = ContentHandler::makeContent( $babeltext, $userpage );
 
-		TranslateUtils::doPageEdit( $page, $content, $user, $summary, EDIT_NEW );
+		$page->doUserEditContent( $content, $user, $summary, EDIT_NEW );
 	}
 
 	public function isWriteMode() {

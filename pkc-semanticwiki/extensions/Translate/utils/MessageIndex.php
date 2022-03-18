@@ -10,7 +10,9 @@
 
 use Cdb\Reader;
 use Cdb\Writer;
+use MediaWiki\Extension\Translate\Services;
 use MediaWiki\Logger\LoggerFactory;
+use MediaWiki\MediaWikiServices;
 
 /**
  * Creates a database of keys in all groups, so that namespace and key can be
@@ -29,19 +31,21 @@ abstract class MessageIndex {
 	private static $keysCache;
 	/** @var BagOStuff */
 	protected $interimCache;
+	/** @var WANObjectCache */
+	private $statusCache;
 
-	/** @return self */
-	public static function singleton() {
+	public function __construct() {
+		// TODO: Use dependency injection
+		$this->statusCache = MediaWikiServices::getInstance()->getMainWANObjectCache();
+	}
+
+	/**
+	 * @deprecated Since 2020.10 Use Services::getMessageIndex()
+	 * @return self
+	 */
+	public static function singleton(): self {
 		if ( self::$instance === null ) {
-			global $wgTranslateMessageIndex;
-			// @phan-suppress-next-line PhanPossiblyUndeclaredVariable
-			$params = $wgTranslateMessageIndex;
-			if ( is_string( $params ) ) {
-				$params = (array)$params;
-			}
-			$class = array_shift( $params );
-			// @phan-suppress-next-line PhanTypeExpectedObjectOrClassName
-			self::$instance = new $class( $params );
+			self::$instance = Services::getInstance()->getMessageIndex();
 		}
 
 		return self::$instance;
@@ -236,15 +240,26 @@ abstract class MessageIndex {
 				// Cache has a later timestamp. This may be caused due to
 				// job deduplication. Just in case, spin off a new job to clean up the cache.
 				$job = MessageIndexRebuildJob::newJob();
-				JobQueueGroup::singleton()->push( $job );
+				TranslateUtils::getJobQueueGroup()->push( $job );
 			}
 		}
+
+		// Other caches can check this key to know when they need to refresh
+		$this->statusCache->touchCheckKey( $this->getStatusCacheKey() );
 
 		$this->clearMessageGroupStats( $diff );
 
 		$recursion--;
 
 		return $new;
+	}
+
+	/**
+	 * @since 2021.10
+	 * @return string
+	 */
+	public function getStatusCacheKey(): string {
+		return $this->statusCache->makeKey( 'Translate', 'MessageIndex', 'status' );
 	}
 
 	private function getInterimCache(): BagOStuff {
@@ -350,7 +365,7 @@ abstract class MessageIndex {
 	 */
 	protected function clearMessageGroupStats( array $diff ) {
 		$job = MessageGroupStatsRebuildJob::newRefreshGroupsJob( $diff['values'] );
-		JobQueueGroup::singleton()->push( $job );
+		TranslateUtils::getJobQueueGroup()->push( $job );
 
 		foreach ( $diff['keys'] as $keys ) {
 			foreach ( $keys as $key => $data ) {
@@ -604,6 +619,7 @@ class CachedMessageIndex extends MessageIndex {
 	protected $index;
 
 	protected function __construct() {
+		parent::__construct();
 		$this->cache = ObjectCache::getInstance( CACHE_ANYTHING );
 	}
 

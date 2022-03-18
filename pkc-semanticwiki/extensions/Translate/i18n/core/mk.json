@@ -204,6 +204,7 @@
 	"supportedlanguages-count": "Вкупно $1 {{PLURAL:$1|јазик|јазици}}.",
 	"supportedlanguages-activity": "$1: $2 {{PLURAL:$2|уредување|уредувања}} - последното пред $3 {{PLURAL:$3|ден|дена}}",
 	"translate-supportedlanguages-cached": "Оваа информација е меѓускладирана пред $1.",
+	"translate-activelanguages-invalid-code": "Јазичниот код „$1“ е непознат или не е овозможен за преведување.",
 	"abusefilter-edit-builder-vars-translate-source-text": "Изворен текст на преводната единица",
 	"abusefilter-edit-builder-vars-translate-target-language": "Целен јазик за преводот",
 	"translate-jssti-add": "Додај во список",
@@ -308,7 +309,7 @@
 	"translate-workflowstatus": "Статус: $1",
 	"translate-workflow-set-doing": "Задавам...",
 	"translate-workflow-autocreated-summary": "Автоматско создавање на страница за работната состојба $1",
-	"translate-stats-workflow": "Статус",
+	"translate-stats-workflow": "Состојба",
 	"translate-workflowgroup-label": "Работни состојби",
 	"translate-workflowgroup-desc": "Оваа група пораки ја прикажува работната состојба на преводите.\nСостојбите се определуваат со променливата $wgTranslateWorkflowStates.",
 	"translate-dynagroup-recent-label": "Скорешни преводи",
@@ -321,6 +322,7 @@
 	"translate-msggroupselector-search-recent": "Скорешни",
 	"translate-msggroupselector-view-subprojects": "$1 {{PLURAL:$1|подгрупа|подгрупи}}",
 	"tux-languageselector": "Преведи на",
+	"tux-select-target-language": "Целен јазик за преводот",
 	"tux-tab-all": "Сите",
 	"tux-tab-untranslated": "Непреведени",
 	"tux-tab-outdated": "Застарени",
@@ -334,7 +336,8 @@
 	"tux-status-saving": "Објавувам...",
 	"tux-status-unsaved": "Необјавено",
 	"tux-save-unknown-error": "Се појави непозната грешка.",
-	"tux-editor-placeholder": "Ваш превод",
+	"tux-editor-placeholder-documentation": "Додај документација на пораката",
+	"tux-editor-placeholder-language": "Вашиот превод на $1",
 	"tux-editor-editsummary-placeholder": "Опис (по желба)",
 	"tux-editor-paste-original-button-label": "Вметни изворен текст",
 	"tux-editor-discard-changes-button-label": "Отфрли промени",
@@ -420,5 +423,6 @@
 	"translate-messagebundle-error-key-too-long": "Клучот „$1“ е предолг",
 	"translate-messagebundle-error-key-invalid-characters": "Клучот „$1“ содржи недозволени знаци",
 	"translate-messagebundle-error-invalid-value": "Клучот „$1“ не содржи низна вредност",
-	"translate-messagebundle-error-empty-value": "Купчето „$1“ нема вредност"
+	"translate-messagebundle-error-empty-value": "Купчето „$1“ нема вредност",
+	"translate-messagebundle-group-description": "Пораки од купче дефинирани на страницата [[$2|$1]]."
 }

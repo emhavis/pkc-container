@@ -86,12 +86,14 @@ class BackportTranslationsMaintenanceScript extends BaseMaintenanceScript {
 		$neverExportLanguages = $this->csv2array(
 			$this->getOption( 'never-export-languages' ) ?? ''
 		);
-		$supportedLanguages = array_keys( TranslateUtils::getLanguageNames( 'en' ) );
+		$supportedLanguages = TranslateUtils::getLanguageNames( 'en' );
 
 		foreach ( $groups as $group ) {
 			$groupId = $group->getId();
 			if ( !$group instanceof FileBasedMessageGroup ) {
-				$this->error( "Skipping $groupId: Not instance of FileBasedMessageGroup" );
+				if ( !$this->hasOption( 'filter-path' ) ) {
+					$this->error( "Skipping $groupId: Not instance of FileBasedMessageGroup" );
+				}
 				continue;
 			}
 
@@ -132,7 +134,7 @@ class BackportTranslationsMaintenanceScript extends BaseMaintenanceScript {
 			}
 
 			$summary = [];
-			$languages = $group->getTranslatableLanguages() ?? $supportedLanguages;
+			$languages = array_keys( $group->getTranslatableLanguages() ?? $supportedLanguages );
 			$languagesToSkip = $neverExportLanguages;
 			$languagesToSkip[] = $sourceLanguage;
 			$languages = array_diff( $languages, $languagesToSkip );

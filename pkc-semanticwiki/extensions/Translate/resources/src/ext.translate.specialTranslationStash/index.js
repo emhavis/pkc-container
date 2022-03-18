@@ -217,27 +217,30 @@ $( function () {
 
 	$ulsTrigger.uls( {
 		ulsPurpose: 'translate-special-translationstash',
-		onSelect: function ( language ) {
-			var direction = $.uls.data.getDir( language ),
-				autonym = $.uls.data.getAutonym( language );
+		onSelect: function ( languageCode ) {
+			var languageDetails = mw.translate.getLanguageDetailsForHtml( languageCode );
 
 			$ulsTrigger
-				.text( autonym )
-				.attr( {
-					lang: language,
-					dir: direction
+				.find( '.ext-translate-target-language' )
+				.text( languageDetails.autonym )
+				.prop( {
+					lang: languageDetails.code,
+					dir: languageDetails.direction
 				} );
 
 			$messageTable
 				.empty()
 				.data( {
-					targetlangcode: language,
-					targetlangdir: direction
+					targetlangcode: languageCode,
+					targetlangdir: languageDetails.direction
 				} );
 
 			loadMessages();
 		}
+	} ).on( 'keypress', function () {
+		$( this ).trigger( 'click' );
 	} );
+
 	// Get the user translations if any(possibly from an early attempt)
 	// and new messages to try.
 	translationStorage.getUserTranslations()

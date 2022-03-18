@@ -2,7 +2,7 @@
     "@note": "This file must be kept in sync with LocalisationUpdate.php",
     "name": "LocalisationUpdate",
     "namemsg": "localisationupdate-extensionname",
-    "version": "1.4.0 [https://www.mediawiki.org/wiki/MLEB MLEB 2021.12]",
+    "version": "1.4.0 [https://www.mediawiki.org/wiki/MLEB MLEB 2022.01]",
     "author": [
         "Tom Maaswinkel",
         "Niklas Laxström",

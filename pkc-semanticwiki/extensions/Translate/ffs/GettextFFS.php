@@ -9,6 +9,7 @@
  * @file
  */
 
+use MediaWiki\Extension\Translate\MessageProcessing\StringMangler;
 use MediaWiki\Extension\Translate\Utilities\GettextPlural;
 use MediaWiki\Logger\LoggerFactory;
 
@@ -94,7 +95,7 @@ class GettextFFS extends SimpleFFS implements MetaYamlSchemaExtender {
 	public static function parseGettextData(
 		$data,
 		$useCtxtAsKey,
-		$mangler,
+		StringMangler $mangler,
 		$keyAlgorithm,
 		bool $allowPotMode
 	) {
@@ -332,10 +333,9 @@ class GettextFFS extends SimpleFFS implements MetaYamlSchemaExtender {
 			$snippet = $lang->truncateForDatabase( $item['id'], 30, '' );
 			$snippet = str_replace( ' ', '_', trim( $snippet ) );
 		} else { // legacy
-			global $wgLegalTitleChars;
+			$legalChars = Title::legalChars();
 			$snippet = $item['id'];
-			// @phan-suppress-next-line PhanPossiblyUndeclaredVariable
-			$snippet = preg_replace( "/[^$wgLegalTitleChars]/", ' ', $snippet );
+			$snippet = preg_replace( "/[^$legalChars]/", ' ', $snippet );
 			$snippet = preg_replace( "/[:&%\/_]/", ' ', $snippet );
 			$snippet = preg_replace( '/ {2,}/', ' ', $snippet );
 			$snippet = $lang->truncateForDatabase( $snippet, 30, '' );

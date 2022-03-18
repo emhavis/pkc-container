@@ -115,7 +115,7 @@ class MessageGroupStatesUpdaterJobTest extends MediaWikiIntegrationTestCase {
 		$page = WikiPage::factory( $title );
 		$content = ContentHandler::makeContent( 'trans1', $title );
 
-		$status = TranslateUtils::doPageEdit( $page, $content, $user, __METHOD__ );
+		$status = $page->doUserEditContent( $content, $user, __METHOD__ );
 
 		self::translateRunJobs();
 		$currentState = ApiGroupReview::getState( $group, 'fi' );
@@ -132,7 +132,7 @@ class MessageGroupStatesUpdaterJobTest extends MediaWikiIntegrationTestCase {
 		$page = WikiPage::factory( $title );
 		$content = ContentHandler::makeContent( 'trans2', $title );
 
-		$status = TranslateUtils::doPageEdit( $page, $content, $user, __METHOD__ );
+		$status = $page->doUserEditContent( $content, $user, __METHOD__ );
 
 		self::translateRunJobs();
 		$currentState = ApiGroupReview::getState( $group, 'fi' );
@@ -149,7 +149,7 @@ class MessageGroupStatesUpdaterJobTest extends MediaWikiIntegrationTestCase {
 		$page = WikiPage::factory( $title );
 		$content = ContentHandler::makeContent( 'trans1 updated', $title );
 
-		TranslateUtils::doPageEdit( $page, $content, $user, __METHOD__ );
+		$page->doUserEditContent( $content, $user, __METHOD__ );
 
 		self::translateRunJobs();
 		$currentState = ApiGroupReview::getState( $group, 'fi' );
@@ -168,7 +168,7 @@ class MessageGroupStatesUpdaterJobTest extends MediaWikiIntegrationTestCase {
 
 	protected static function translateRunJobs() {
 		do {
-			$job = JobQueueGroup::singleton()->pop();
+			$job = TranslateUtils::getJobQueueGroup()->pop();
 			if ( !$job ) {
 				break;
 			}

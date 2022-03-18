@@ -7,6 +7,7 @@ use MediaWiki\Extension\Translate\Cache\PersistentCache;
 use MediaWiki\Extension\Translate\PageTranslation\TranslatablePageMover;
 use MediaWiki\Extension\Translate\PageTranslation\TranslatablePageParser;
 use MediaWiki\Extension\Translate\PageTranslation\TranslationUnitStoreFactory;
+use MediaWiki\Extension\Translate\Statistics\ProgressStatsTableFactory;
 use MediaWiki\Extension\Translate\Statistics\TranslationStatsDataProvider;
 use MediaWiki\Extension\Translate\Statistics\TranslatorActivity;
 use MediaWiki\Extension\Translate\Synchronization\ExternalMessageSourceStateImporter;
@@ -15,15 +16,15 @@ use MediaWiki\Extension\Translate\TranslatorInterface\EntitySearch;
 use MediaWiki\Extension\Translate\TranslatorSandbox\TranslationStashReader;
 use MediaWiki\Extension\Translate\TtmServer\TtmServerFactory;
 use MediaWiki\Extension\Translate\Utilities\ConfigHelper;
-use MediaWiki\Extension\Translate\Utilities\Json\JsonCodec;
 use MediaWiki\Extension\Translate\Utilities\ParsingPlaceholderFactory;
 use MediaWiki\MediaWikiServices;
+use MessageIndex;
 use Psr\Container\ContainerInterface;
 
 /**
  * Minimal service container.
  *
- * Main purpose is to give type-hinted getters for services defined in this extensions.
+ * Main purpose is to give type-hinted getters for services defined in this extension.
  *
  * @author Niklas Laxström
  * @license GPL-2.0-or-later
@@ -68,9 +69,9 @@ class Services implements ContainerInterface {
 		return $this->get( 'Translate:GroupSynchronizationCache' );
 	}
 
-	/** @since 2020.12 */
-	public function getJsonCodec(): JsonCodec {
-		return $this->get( 'Translate:JsonCodec' );
+	/** @since 2020.10 */
+	public function getMessageIndex(): MessageIndex {
+		return $this->get( 'Translate:MessageIndex' );
 	}
 
 	/** @since 2020.07 */
@@ -81,6 +82,11 @@ class Services implements ContainerInterface {
 	/** @since 2020.12 */
 	public function getPersistentCache(): PersistentCache {
 		return $this->get( 'Translate:PersistentCache' );
+	}
+
+	/** @since 2020.12 */
+	public function getProgressStatsTableFactory(): ProgressStatsTableFactory {
+		return $this->get( 'Translate:ProgressStatsTableFactory' );
 	}
 
 	/** @since 2021.03 */

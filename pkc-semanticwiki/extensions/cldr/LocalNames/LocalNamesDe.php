@@ -33,6 +33,7 @@ $languageNames = [
 	'bh' => 'Bhojpuri',
 	# used by Wikidata, T263946
 	'bkh' => 'Bakoko',
+	# 'blk' => 'Pa\'O',', // German translation unassured
 	'bnn' => 'Bunun',
 	# used by Wikidata, T263946
 	'bqz' => 'Bakaka',
@@ -98,6 +99,7 @@ $languageNames = [
 	'gan-hans' => 'Gan (Vereinfachte Schrift)',
 	'gan-hant' => 'Gan (Traditionelle Schrift)',
 	'gcr' => 'Französisch-Guayana Kreolisch',
+	'gld' => 'Nanaisch',
 	# used by Wikidata T217131
 	'gml' => 'Mittelniederdeutsch',
 	'gmy' => 'Mykenisches Griechisch',
@@ -169,6 +171,7 @@ $languageNames = [
 	'mui' => 'Musi',
 	'nah' => 'Nahuatl',
 	'nl-informal' => 'Niederländusch (informelle Anrede)',
+	'nmz' => 'Nawdm',
 	# used by Wikidata, T263946
 	'nnz' => 'Nda\'nda\'',
 	'nod' => 'Lanna',
@@ -286,6 +289,7 @@ $languageNames = [
 	'uun' => 'Pazeh',
 	'uz-cyrl' => 'Usbekisch (kyrillische Schrift)',
 	'uz-latn' => 'Usbekisch (lateinische Schrift)',
+	'vmw' => 'Makua',
 	# used by Wikidata, T263946
 	'vut' => 'Wute',
 	# used by Wikidata, T239411

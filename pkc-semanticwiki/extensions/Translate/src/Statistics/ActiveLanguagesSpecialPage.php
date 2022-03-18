@@ -6,7 +6,9 @@ namespace MediaWiki\Extension\Translate\Statistics;
 use Config;
 use Html;
 use HtmlArmor;
+use InvalidArgumentException;
 use Language;
+use LanguageCode;
 use LinkBatch;
 use MediaWiki\Config\ServiceOptions;
 use MediaWiki\Extension\Translate\Utilities\ConfigHelper;
@@ -39,6 +41,10 @@ class ActiveLanguagesSpecialPage extends SpecialPage {
 	private $configHelper;
 	/** @var Language */
 	private $contentLanguage;
+	/** @var ProgressStatsTableFactory */
+	private $progressStatsTableFactory;
+	/** @var StatsTable */
+	private $progressStatsTable;
 	/** @var int Cutoff time for inactivity in days */
 	private $period = 180;
 
@@ -52,7 +58,8 @@ class ActiveLanguagesSpecialPage extends SpecialPage {
 		LanguageNameUtils $langNameUtils,
 		ILoadBalancer $loadBalancer,
 		ConfigHelper $configHelper,
-		Language $contentLanguage
+		Language $contentLanguage,
+		ProgressStatsTableFactory $progressStatsTableFactory
 	) {
 		parent::__construct( 'SupportedLanguages' );
 		$this->options = new ServiceOptions( self::CONSTRUCTOR_OPTIONS, $config );
@@ -61,6 +68,7 @@ class ActiveLanguagesSpecialPage extends SpecialPage {
 		$this->loadBalancer = $loadBalancer;
 		$this->configHelper = $configHelper;
 		$this->contentLanguage = $contentLanguage;
+		$this->progressStatsTableFactory = $progressStatsTableFactory;
 	}
 
 	protected function getGroupName() {
@@ -74,6 +82,7 @@ class ActiveLanguagesSpecialPage extends SpecialPage {
 	public function execute( $par ) {
 		$out = $this->getOutput();
 		$lang = $this->getLanguage();
+		$this->progressStatsTable = $this->progressStatsTableFactory->newFromContext( $this->getContext() );
 
 		$this->setHeaders();
 		$out->addModuleStyles( 'ext.translate.specialpages.styles' );
@@ -102,16 +111,23 @@ class ActiveLanguagesSpecialPage extends SpecialPage {
 		$this->outputLanguageCloud( $languages, $names );
 		$out->addWikiMsg( 'supportedlanguages-count', $lang->formatNum( count( $languages ) ) );
 
-		if ( !$par || !$this->langNameUtils->isKnownLanguageTag( $par ) ) {
+		if ( !$par ) {
 			return;
 		}
 
-		$language = $par;
+		// Convert formatted language tag like zh-Hant to internal format like zh-hant
+		$language = strtolower( $par );
 		try {
 			$data = $this->translatorActivity->inLanguage( $language );
 		} catch ( StatisticsUnavailable $e ) {
 			// generic-pool-error is from MW core
-			$out->wrapWikiMsg( '<div class="warningbox">$1</div>', 'generic-pool-error' );
+			$out->addHTML( Html::errorBox( $this->msg( 'generic-pool-error' )->parse() ) );
+			return;
+		} catch ( InvalidArgumentException $e ) {
+			$errorMessageHtml = $this->msg( 'translate-activelanguages-invalid-code' )
+				->params( LanguageCode::bcp47( $language ) )
+				->parse();
+			$out->addHTML( Html::errorBox( $errorMessageHtml ) );
 			return;
 		}
 
@@ -124,6 +140,7 @@ class ActiveLanguagesSpecialPage extends SpecialPage {
 	private function showLanguage( string $code, array $users, int $cachedAt ): void {
 		$out = $this->getOutput();
 		$lang = $this->getLanguage();
+		$bcp47Code = LanguageCode::bcp47( $code );
 
 		// Information to be used inside the foreach loop.
 		$linkInfo = [];
@@ -136,12 +153,13 @@ class ActiveLanguagesSpecialPage extends SpecialPage {
 		$native = $this->langNameUtils->getLanguageName( $code, null, 'all' );
 
 		if ( $local !== $native ) {
+
 			$headerText = $this->msg( 'supportedlanguages-portallink' )
-				->params( $code, $local, $native )->escaped();
+				->params( $bcp47Code, $local, $native )->escaped();
 		} else {
 			// No CLDR, so a less localised header and link title.
 			$headerText = $this->msg( 'supportedlanguages-portallink-nocldr' )
-				->params( $code, $native )->escaped();
+				->params( $bcp47Code, $native )->escaped();
 		}
 
 		$out->addHTML( Html::rawElement( 'h2', [ 'id' => $code ], $headerText ) );
@@ -262,8 +280,6 @@ class ActiveLanguagesSpecialPage extends SpecialPage {
 		$period = $this->period;
 
 		$links = [];
-		$statsTable = new StatsTable();
-
 		// List users in descending order by number of translations in this language
 		usort( $userStats, static function ( $a, $b ) {
 			return -(
@@ -301,7 +317,7 @@ class ActiveLanguagesSpecialPage extends SpecialPage {
 					->text();
 			$last = max( 1, min( $period, $last ) );
 			$styles['border-bottom'] =
-				'3px solid #' . $statsTable->getBackgroundColor( ( $period - $last ) / $period );
+				'3px solid #' . $this->progressStatsTable->getBackgroundColor( ( $period - $last ) / $period );
 
 			$stylestr = $this->formatStyle( $styles );
 			if ( $stylestr ) {
@@ -352,12 +368,11 @@ class ActiveLanguagesSpecialPage extends SpecialPage {
 	protected function getColorLegend() {
 		$legend = '';
 		$period = $this->period;
-		$statsTable = new StatsTable();
 
 		for ( $i = 0; $i <= $period; $i += 30 ) {
 			$iFormatted = htmlspecialchars( $this->getLanguage()->formatNum( $i ) );
 			$legend .= '<span style="background-color:#' .
-				$statsTable->getBackgroundColor( ( $period - $i ) / $period ) .
+				$this->progressStatsTable->getBackgroundColor( ( $period - $i ) / $period ) .
 				"\"> $iFormatted</span>";
 		}
 

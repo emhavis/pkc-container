@@ -40,7 +40,7 @@ class Babel {
 
 		self::mTemplateLinkBatch( $parameters );
 
-		$parser->getOutput()->addModuleStyles( 'ext.babel' );
+		$parser->getOutput()->addModuleStyles( [ 'ext.babel' ] );
 
 		$content = self::mGenerateContentTower( $parser, $parameters );
 
@@ -408,7 +408,7 @@ EOT;
 			return $result;
 		}
 
-		if ( $wgBabelCentralDb === wfWikiID() ) {
+		if ( $wgBabelCentralDb === WikiMap::getCurrentWikiId() ) {
 			// We are the central wiki, so no fallback we can do
 			return [];
 		}

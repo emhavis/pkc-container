@@ -178,7 +178,7 @@ class MessageHandle {
 
 			// Schedule a job in the job queue (with deduplication)
 			$job = MessageIndexRebuildJob::newJob();
-			JobQueueGroup::singleton()->push( $job );
+			TranslateUtils::getJobQueueGroup()->push( $job );
 
 			return false;
 		}
@@ -271,7 +271,7 @@ class MessageHandle {
 		}
 
 		$namespace = $this->title->getNamespace();
-		if ( !$nsInfo->isCapitalized( $namespace ) ) {
+		if ( $nsInfo->isCapitalized( $namespace ) ) {
 			$lowercaseKey = $contentLanguage->lcfirst( $key );
 			if ( in_array( $lowercaseKey, $groupKeys, true ) ) {
 				return $lowercaseKey;

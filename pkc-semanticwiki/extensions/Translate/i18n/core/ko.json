@@ -194,6 +194,7 @@
 	"supportedlanguages-recenttranslations": "최근 번역",
 	"supportedlanguages-count": "총 {{PLURAL:$1|언어 수}}는 $1개입니다.",
 	"supportedlanguages-activity": "$1: {{PLURAL:$2|편집}} $2회 - 마지막 편집 $3{{PLURAL:$3|일}} 전",
+	"translate-activelanguages-invalid-code": "\"$1\" 언어 코드는 알 수 없거나 번역을 위해 활성화되어 있지 않습니다.",
 	"abusefilter-edit-builder-vars-translate-source-text": "번역 단위의 소스 본문",
 	"abusefilter-edit-builder-vars-translate-target-language": "번역 대상 언어",
 	"translate-jssti-add": "목록에 추가",
@@ -303,6 +304,7 @@
 	"translate-msggroupselector-search-recent": "최근",
 	"translate-msggroupselector-view-subprojects": "{{PLURAL:$1|하위 그룹}} $1개 보기",
 	"tux-languageselector": "번역할 언어",
+	"tux-select-target-language": "번역 대상 언어",
 	"tux-tab-all": "모두",
 	"tux-tab-untranslated": "미번역",
 	"tux-tab-outdated": "오래됨",
@@ -316,7 +318,8 @@
 	"tux-status-saving": "게시 중...",
 	"tux-status-unsaved": "게시하지 않음",
 	"tux-save-unknown-error": "알 수 없는 오류가 발생했습니다.",
-	"tux-editor-placeholder": "내 번역",
+	"tux-editor-placeholder-documentation": "메시지 설명문 추가",
+	"tux-editor-placeholder-language": "$1 번역",
 	"tux-editor-editsummary-placeholder": "요약 (선택 사항)",
 	"tux-editor-paste-original-button-label": "원본 텍스트 붙여넣기",
 	"tux-editor-discard-changes-button-label": "바뀜 버리기",
@@ -400,5 +403,6 @@
 	"translate-messagebundle-error-key-too-long": "\"$1\" 키가 너무 깁니다",
 	"translate-messagebundle-error-key-invalid-characters": "\"$1\" 키에 허용되지 않은 문자가 있습니다",
 	"translate-messagebundle-error-invalid-value": "\"$1\" 키에 문자열 값을 포함해서는 안 됩니다",
-	"translate-messagebundle-error-empty-value": "\"$1\" 키에 값이 없습니다"
+	"translate-messagebundle-error-empty-value": "\"$1\" 키에 값이 없습니다",
+	"translate-messagebundle-group-description": "문서 [[$2|$1]]에 정의된 메시지 번들의 메시지입니다."
 }

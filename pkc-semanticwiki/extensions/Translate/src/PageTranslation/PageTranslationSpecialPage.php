@@ -6,11 +6,9 @@ namespace MediaWiki\Extension\Translate\PageTranslation;
 use ContentHandler;
 use DifferenceEngine;
 use Html;
-use JobQueueGroup;
 use ManualLogEntry;
 use MediaWiki\Cache\LinkBatchFactory;
 use MediaWiki\Extension\Translate\Utilities\LanguagesMultiselectWidget;
-use MediaWiki\Hook\BeforeParserFetchTemplateRevisionRecordHook;
 use MediaWiki\Languages\LanguageFactory;
 use MediaWiki\Languages\LanguageNameUtils;
 use MediaWiki\Revision\RevisionRecord;
@@ -188,7 +186,7 @@ class PageTranslationSpecialPage extends SpecialPage {
 			$sharedGroupIds = MessageGroups::getSharedGroups( $group );
 			if ( $sharedGroupIds !== [] ) {
 				$job = MessageGroupStatsRebuildJob::newRefreshGroupsJob( $sharedGroupIds );
-				JobQueueGroup::singleton()->push( $job );
+				TranslateUtils::getJobQueueGroup()->push( $job );
 			}
 
 			// Show updated page with a notice
@@ -205,8 +203,7 @@ class PageTranslationSpecialPage extends SpecialPage {
 				$title
 			);
 
-			$status = TranslateUtils::doPageEdit(
-				WikiPage::factory( $title ),
+			$status = WikiPage::factory( $title )->doUserEditContent(
 				$content,
 				$this->getUser(),
 				$this->msg( 'tpt-unlink-summary' )->inContentLanguage()->text(),
@@ -1014,12 +1011,6 @@ class PageTranslationSpecialPage extends SpecialPage {
 	}
 
 	private function templateTransclusionForm( bool $supportsTransclusion ): void {
-		// Transclusion is only supported if this hook is available so avoid showing the
-		// form if it's not. This hook should be available for MW >= 1.36
-		if ( !interface_exists( BeforeParserFetchTemplateRevisionRecordHook::class ) ) {
-			return;
-		}
-
 		$out = $this->getOutput();
 		$out->wrapWikiMsg( '==$1==', 'tpt-transclusion' );
 
@@ -1067,8 +1058,7 @@ class PageTranslationSpecialPage extends SpecialPage {
 			$page->getTitle()
 		);
 
-		$status = TranslateUtils::doPageEdit(
-			$wikiPage,
+		$status = $wikiPage->doUserEditContent(
 			$content,
 			$this->getUser(),
 			$this->msg( 'tpt-mark-summary' )->inContentLanguage()->text(),
@@ -1143,7 +1133,7 @@ class PageTranslationSpecialPage extends SpecialPage {
 		MessageIndex::singleton()->storeInterim( $group, $newKeys );
 
 		$job = TranslationsUpdateJob::newFromPage( $page, $sections );
-		JobQueueGroup::singleton()->push( $job );
+		TranslateUtils::getJobQueueGroup()->push( $job );
 
 		$this->handlePriorityLanguages( $this->getRequest(), $page );
 

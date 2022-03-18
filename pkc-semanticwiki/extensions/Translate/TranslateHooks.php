@@ -8,6 +8,7 @@
  */
 
 use MediaWiki\Config\ServiceOptions;
+use MediaWiki\Extension\AbuseFilter\Variables\VariableHolder;
 use MediaWiki\Extension\Translate\PageTranslation\PageTranslationSpecialPage;
 use MediaWiki\Extension\Translate\SystemUsers\FuzzyBot;
 use MediaWiki\Extension\Translate\SystemUsers\TranslateUserManager;
@@ -221,6 +222,7 @@ class TranslateHooks implements RevisionRecordInsertedHook {
 				'class' => ManageTranslatorSandboxSpecialPage::class,
 				'services' => [
 					'Translate:TranslationStashReader',
+					'UserOptionsLookup'
 				],
 				'args' => [
 					static function () {
@@ -235,7 +237,8 @@ class TranslateHooks implements RevisionRecordInsertedHook {
 				'class' => TranslationStashSpecialPage::class,
 				'services' => [
 					'LanguageNameUtils',
-					'Translate:TranslationStashReader'
+					'Translate:TranslationStashReader',
+					'UserOptionsLookup'
 				],
 				'args' => [
 					static function () {
@@ -308,7 +311,7 @@ class TranslateHooks implements RevisionRecordInsertedHook {
 	/**
 	 * Used for setting an AbuseFilter variable.
 	 *
-	 * @param AbuseFilterVariableHolder &$vars
+	 * @param VariableHolder &$vars
 	 * @param Title $title
 	 * @param User $user
 	 */
@@ -336,7 +339,7 @@ class TranslateHooks implements RevisionRecordInsertedHook {
 	/**
 	 * Computes the translate_source_text and translate_target_language AbuseFilter variables
 	 * @param string $method
-	 * @param AbuseFilterVariableHolder $vars
+	 * @param VariableHolder $vars
 	 * @param array $parameters
 	 * @param null &$result
 	 * @return bool
@@ -391,112 +394,110 @@ class TranslateHooks implements RevisionRecordInsertedHook {
 	 */
 	public static function schemaUpdates( DatabaseUpdater $updater ) {
 		$dir = __DIR__ . '/sql';
+		$dbType = $updater->getDB()->getType();
 
-		$updater->addExtensionUpdate( [
-			'addTable',
-			'translate_sections',
-			"$dir/translate_sections.sql",
-			true
-		] );
-		$updater->addExtensionUpdate( [
-			'addField',
-			'translate_sections',
-			'trs_order',
-			"$dir/translate_sections-trs_order.patch.sql",
-			true
-		] );
-		$updater->addExtensionUpdate( [
-			'addTable',
-			'revtag', "$dir/revtag.sql",
-			true
-		] );
-		$updater->addExtensionUpdate( [
-			'addTable',
-			'translate_groupstats',
-			"$dir/translate_groupstats.sql",
-			true
-		] );
-		$updater->addExtensionUpdate( [
-			'addIndex',
-			'translate_sections',
-			'trs_page_order',
-			"$dir/translate_sections-indexchange.sql",
-			true
-		] );
-		$updater->addExtensionUpdate( [
-			'dropIndex',
-			'translate_sections',
-			'trs_page',
-			"$dir/translate_sections-indexchange2.sql",
-			true
-		] );
-		$updater->addExtensionUpdate( [
-			'addTable',
-			'translate_reviews',
-			"$dir/translate_reviews.sql",
-			true
-		] );
-		$updater->addExtensionUpdate( [
-			'addTable',
-			'translate_groupreviews',
-			"$dir/translate_groupreviews.sql",
-			true
-		] );
-		$updater->addExtensionUpdate( [
-			'addTable',
-			'translate_tms',
-			"$dir/translate_tm.sql",
-			true
-		] );
-		$updater->addExtensionUpdate( [
-			'addTable',
-			'translate_metadata',
-			"$dir/translate_metadata.sql",
-			true
-		] );
-		$updater->addExtensionUpdate( [
-			'addTable', 'translate_messageindex',
-			"$dir/translate_messageindex.sql",
-			true
-		] );
-		$updater->addExtensionUpdate( [
-			'addIndex',
-			'translate_groupstats',
-			'tgs_lang',
-			"$dir/translate_groupstats-indexchange.sql",
-			true
-		] );
-		$updater->addExtensionUpdate( [
-			'addField', 'translate_groupstats',
-			'tgs_proofread',
-			"$dir/translate_groupstats-proofread.sql",
-			true
-		] );
+		if ( $dbType === 'mysql' || $dbType === 'sqlite' ) {
+			$updater->addExtensionTable(
+				'translate_sections',
+				"{$dir}/{$dbType}/translate_sections.sql"
+			);
+			$updater->addExtensionUpdate( [
+				'addField',
+				'translate_sections',
+				'trs_order',
+				"$dir/translate_sections-trs_order.patch.sql",
+				true
+			] );
+			$updater->addExtensionUpdate( [
+				'addIndex',
+				'translate_sections',
+				'trs_page_order',
+				"$dir/translate_sections-indexchange.sql",
+				true
+			] );
+			$updater->addExtensionUpdate( [
+				'dropIndex',
+				'translate_sections',
+				'trs_page',
+				"$dir/translate_sections-indexchange2.sql",
+				true
+			] );
+			$updater->addExtensionTable(
+				'revtag',
+				"{$dir}/{$dbType}/revtag.sql"
+			);
+			$updater->addExtensionTable(
+				'translate_groupstats',
+				"{$dir}/{$dbType}/translate_groupstats.sql"
+			);
+			$updater->addExtensionTable(
+				'translate_reviews',
+				"{$dir}/{$dbType}/translate_reviews.sql"
+			);
+			$updater->addExtensionTable(
+				'translate_groupreviews',
+				"{$dir}/{$dbType}/translate_groupreviews.sql"
+			);
+			$updater->addExtensionTable(
+				'translate_tms',
+				"{$dir}/{$dbType}/translate_tm.sql"
+			);
+			$updater->addExtensionTable(
+				'translate_metadata',
+				"{$dir}/{$dbType}/translate_metadata.sql"
+			);
+			$updater->addExtensionTable(
+				'translate_messageindex',
+				"{$dir}/{$dbType}/translate_messageindex.sql"
+			);
+			$updater->addExtensionUpdate( [
+				'addIndex',
+				'translate_groupstats',
+				'tgs_lang',
+				"$dir/translate_groupstats-indexchange.sql",
+				true
+			] );
+			$updater->addExtensionUpdate( [
+				'addField', 'translate_groupstats',
+				'tgs_proofread',
+				"$dir/translate_groupstats-proofread.sql",
+				true
+			] );
 
-		$updater->addExtensionUpdate( [
-			'addTable',
-			'translate_stash',
-			"$dir/translate_stash.sql",
-			true
-		] );
+			$updater->addExtensionTable(
+				'translate_stash',
+				"{$dir}/{$dbType}/translate_stash.sql"
+			);
 
-		// This also adds a PRIMARY KEY
-		$updater->addExtensionUpdate( [
-			'renameIndex',
-			'translate_reviews',
-			'trr_user_page_revision',
-			'PRIMARY',
-			false,
-			"$dir/translate_reviews-patch-01-primary-key.sql",
-			true
-		] );
+			// This also adds a PRIMARY KEY
+			$updater->addExtensionUpdate( [
+				'renameIndex',
+				'translate_reviews',
+				'trr_user_page_revision',
+				'PRIMARY',
+				false,
+				"$dir/translate_reviews-patch-01-primary-key.sql",
+				true
+			] );
 
-		$updater->addExtensionUpdate( [
-			'addTable',
-			'translate_cache',
-			"$dir/translate_cache.sql",
-			true
-		] );
+			$updater->addExtensionTable(
+				'translate_cache',
+				"{$dir}/{$dbType}/translate_cache.sql"
+			);
+
+			if ( $dbType === 'mysql' ) {
+				$updater->modifyExtensionField(
+					'translate_cache',
+					'tc_key',
+					"{$dir}/{$dbType}/translate_cache-alter-varbinary.sql"
+				);
+			}
+		} elseif ( $dbType === 'postgres' ) {
+			$updater->addExtensionTable(
+				'translate_sections',
+				"{$dir}/{$dbType}/tables-generated.sql"
+			);
+		}
 	}
 
 	/**
@@ -668,13 +669,33 @@ class TranslateHooks implements RevisionRecordInsertedHook {
 	}
 
 	/**
-	 * Hook: LinksUpdate
-	 * @param LinksUpdate $updater
+	 * Hook: ParserAfterTidy
+	 * @param Parser $parser
+	 * @param string &$html
 	 */
-	public static function preventCategorization( LinksUpdate $updater ) {
-		$handle = new MessageHandle( $updater->getTitle() );
+	public static function preventCategorization( Parser $parser, &$html ) {
+		$handle = new MessageHandle( $parser->getTitle() );
 		if ( $handle->isMessageNamespace() && !$handle->isDoc() ) {
-			$updater->mCategories = [];
+			$parserOutput = $parser->getOutput();
+			$parserOutput->setExtensionData( 'translate-fake-categories',
+				$parserOutput->getCategories() );
+			if ( method_exists( $parserOutput, 'setCategories' ) ) { // 1.38+
+				$parserOutput->setCategories( [] );
+			} else {
+				$parserOutput->setCategoryLinks( [] );
+			}
+		}
+	}
+
+	/**
+	 * Hook: OutputPageParserOutput
+	 * @param OutputPage $outputPage
+	 * @param ParserOutput $parserOutput
+	 */
+	public static function showFakeCategories( OutputPage $outputPage, ParserOutput $parserOutput ) {
+		$fakeCategories = $parserOutput->getExtensionData( 'translate-fake-categories' );
+		if ( $fakeCategories ) {
+			$outputPage->setCategoryLinks( $fakeCategories );
 		}
 	}
 

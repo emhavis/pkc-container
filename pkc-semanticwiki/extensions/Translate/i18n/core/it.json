@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Ajeje Brazorf",
 			"Albe Albe460",
 			"Amire80",
 			"Anto",
@@ -13,6 +14,7 @@
 			"Fringio",
 			"Gianfranco",
 			"Klutzy",
+			"Mannivu",
 			"Matteocng",
 			"McDutchie",
 			"Melos",
@@ -203,7 +205,9 @@
 	"supportedlanguages-recenttranslations": "traduzioni recenti",
 	"supportedlanguages-count": "$1 {{PLURAL:$1|lingua|lingue}} in totale.",
 	"supportedlanguages-activity": "$1: $2 {{PLURAL:$2|modifica|modifiche}} - ultima modifica $3 {{PLURAL:$3|giorno|giorni}} fa",
+	"translate-activelanguages-invalid-code": "Il codice lingua \"$1\" è sconosciuto o non è abilitato per la traduzione.",
 	"abusefilter-edit-builder-vars-translate-source-text": "Testo di origine di un'unità di traduzione",
+	"abusefilter-edit-builder-vars-translate-target-language": "Lingua di destinazione per la traduzione",
 	"translate-jssti-add": "Aggiungi all'elenco",
 	"managemessagegroups": "Gestione del gruppo di messaggi",
 	"translate-smg-notallowed": "Non sei autorizzato a eseguire questa azione.",
@@ -294,6 +298,7 @@
 	"translate-msggroupselector-search-recent": "Recenti",
 	"translate-msggroupselector-view-subprojects": "$1 {{PLURAL:$1|sotto-gruppo|sotto-gruppi}}",
 	"tux-languageselector": "Traduci in",
+	"tux-select-target-language": "Lingua di destinazione per la traduzione",
 	"tux-tab-all": "Tutti",
 	"tux-tab-untranslated": "Non tradotti",
 	"tux-tab-outdated": "Da aggiornare",
@@ -307,7 +312,8 @@
 	"tux-status-saving": "Pubblicazione...",
 	"tux-status-unsaved": "Non pubblicate",
 	"tux-save-unknown-error": "Si è verificato un errore sconosciuto.",
-	"tux-editor-placeholder": "La tua traduzione",
+	"tux-editor-placeholder-documentation": "Aggiungi documentazione del messaggio",
+	"tux-editor-placeholder-language": "La tua traduzione in $1",
 	"tux-editor-editsummary-placeholder": "Oggetto facoltativo",
 	"tux-editor-paste-original-button-label": "Incolla il testo sorgente",
 	"tux-editor-discard-changes-button-label": "Ignora modifiche",
@@ -386,5 +392,5 @@
 	"tux-nojs": "Questo strumento non funziona senza JavaScript. JavaScript potrebbe essere disattivato, non ha funzionato o questo browser non è supportato.",
 	"specialpages-group-translation": "Traduzione",
 	"translate-messagebundle-error-key-too-long": "La chiave \"$1\" è troppo lunga",
-	"translate-messagebundle-error-empty-value": "LA chiave \"$1\" non ha un valore"
+	"translate-messagebundle-error-empty-value": "La chiave \"$1\" non ha un valore"
 }

@@ -9,6 +9,7 @@
 			"Crochet.david",
 			"Dereckson",
 			"Dr Brains",
+			"DreZhsh",
 			"Epok",
 			"Florian COLLIN",
 			"Gomoko",
@@ -239,6 +240,7 @@
 	"supportedlanguages-count": "$1 langue{{PLURAL:$1||s}} en tout.",
 	"supportedlanguages-activity": "$1 : $2 modification{{PLURAL:$2||s}} – dernière modification il y a $3 jour{{PLURAL:$3||s}}",
 	"translate-supportedlanguages-cached": "Cette information a été mise en cache il y a $1.",
+	"translate-activelanguages-invalid-code": "Le code de langue « $1 » est inconnu ou non activé pour la traduction.",
 	"abusefilter-edit-builder-vars-translate-source-text": "Texte source de l’unité de traduction",
 	"abusefilter-edit-builder-vars-translate-target-language": "Langue cible pour la traduction",
 	"translate-jssti-add": "Ajouter à la liste",
@@ -356,6 +358,7 @@
 	"translate-msggroupselector-search-recent": "Récents",
 	"translate-msggroupselector-view-subprojects": "$1 sous-groupe{{PLURAL:$1||s}}",
 	"tux-languageselector": "Traduire en",
+	"tux-select-target-language": "Langue cible pour la traduction",
 	"tux-tab-all": "Tous",
 	"tux-tab-untranslated": "Non traduits",
 	"tux-tab-outdated": "Désuets",
@@ -369,7 +372,8 @@
 	"tux-status-saving": "Publication en cours...",
 	"tux-status-unsaved": "Non publié",
 	"tux-save-unknown-error": "Une erreur inconnue s’est produite.",
-	"tux-editor-placeholder": "Votre traduction",
+	"tux-editor-placeholder-documentation": "Ajouter une documentation du message",
+	"tux-editor-placeholder-language": "Votre traduction en $1",
 	"tux-editor-editsummary-placeholder": "Résumé facultatif",
 	"tux-editor-paste-original-button-label": "Coller le texte source",
 	"tux-editor-discard-changes-button-label": "Annuler les modifications",
@@ -455,5 +459,6 @@
 	"translate-messagebundle-error-key-too-long": "La clé « $1 » est trop long",
 	"translate-messagebundle-error-key-invalid-characters": "La clé « $1 » contient des caractères interdits",
 	"translate-messagebundle-error-invalid-value": "La clé « $1 » ne contient pas de valeur chaîne",
-	"translate-messagebundle-error-empty-value": "La clé « $1 » n’a pas de valeur"
+	"translate-messagebundle-error-empty-value": "La clé « $1 » n’a pas de valeur",
+	"translate-messagebundle-group-description": "Messages d'un faisceau de messages défini sur la page [[$2|$1]]."
 }

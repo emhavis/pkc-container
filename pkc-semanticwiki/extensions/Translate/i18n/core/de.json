@@ -216,6 +216,7 @@
 	"supportedlanguages-count": "Insgesamt $1 {{PLURAL:$1|Sprache|Sprachen}}.",
 	"supportedlanguages-activity": "$1: $2 {{PLURAL:$2|Bearbeitung|Bearbeitungen}} - letzte Bearbeitung vor $3 {{PLURAL:$3|Tag|Tagen}}",
 	"translate-supportedlanguages-cached": "Diese Informationen wurden vor $1 zwischengespeichert.",
+	"translate-activelanguages-invalid-code": "Der Sprachcode „$1“ ist unbekannt oder nicht für die Übersetzung aktiviert.",
 	"abusefilter-edit-builder-vars-translate-source-text": "Quelltext der Übersetzungseinheit",
 	"abusefilter-edit-builder-vars-translate-target-language": "Zielsprache für die Übersetzung",
 	"translate-jssti-add": "Zur Liste hinzufügen",
@@ -333,6 +334,7 @@
 	"translate-msggroupselector-search-recent": "Aktuell",
 	"translate-msggroupselector-view-subprojects": "{{PLURAL:$1|Eine Untergruppe|$1 Untergruppen}}",
 	"tux-languageselector": "Übersetzen auf",
+	"tux-select-target-language": "Zielsprache für die Übersetzung",
 	"tux-tab-all": "Alle",
 	"tux-tab-untranslated": "Nicht übersetzt",
 	"tux-tab-outdated": "Veraltet",
@@ -346,7 +348,8 @@
 	"tux-status-saving": "Veröffentlichen …",
 	"tux-status-unsaved": "Nicht veröffentlicht",
 	"tux-save-unknown-error": "Es ist ein unbekannter Fehler aufgetreten.",
-	"tux-editor-placeholder": "Deine Übersetzung",
+	"tux-editor-placeholder-documentation": "Nachrichtendokumentation hinzufügen",
+	"tux-editor-placeholder-language": "Deine Übersetzung in $1",
 	"tux-editor-editsummary-placeholder": "Optionale Zusammenfassung",
 	"tux-editor-paste-original-button-label": "Quelltext einfügen",
 	"tux-editor-discard-changes-button-label": "Änderungen verwerfen",
@@ -432,5 +435,6 @@
 	"translate-messagebundle-error-key-too-long": "Schlüssel „$1“ ist zu lang",
 	"translate-messagebundle-error-key-invalid-characters": "Schlüssel „$1“ enthält unzulässige Zeichen",
 	"translate-messagebundle-error-invalid-value": "Schlüssel „$1“ enthält keinen String-Wert",
-	"translate-messagebundle-error-empty-value": "Schlüssel „$1“ hat keinen Wert"
+	"translate-messagebundle-error-empty-value": "Schlüssel „$1“ hat keinen Wert",
+	"translate-messagebundle-group-description": "Nachrichten eines auf Seite [[$2|$1]] definierten Nachrichtenbündels."
 }

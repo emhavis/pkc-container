@@ -3,6 +3,7 @@
 		"authors": [
 			"Arystanbek",
 			"BaRaN6161 TURK",
+			"Can",
 			"Hedda",
 			"Joseph",
 			"MuratTheTurkish",
@@ -63,6 +64,8 @@
 	"apihelp-query+messagegroupstats-description": "Sorgu mesajı grup istatistikleri.",
 	"apihelp-query+messagegroupstats-summary": "Sorgu mesajı grup istatistikleri.",
 	"apihelp-query+messagegroupstats-param-group": "Mesaj grup kimliği.",
+	"apihelp-query+messagegroupstats-param-suppresscomplete": "Çevirisi tamamlanmış dilleri görüntüleme",
+	"apihelp-query+messagegroupstats-param-suppressempty": "Hiç çevirisi olmayan dilleri görüntüleme",
 	"apihelp-query+messagegroupstats-example-1": "\"page-Example\" grubu için çeviri tamamlama istatistiklerinin listesi",
 	"apihelp-query+messagetranslations-description": "Tek bir mesaj için tüm çevirileri sorgulayın.",
 	"apihelp-query+messagetranslations-summary": "Tek bir mesaj için tüm çevirileri sorgulayın.",
@@ -170,5 +173,8 @@
 	"apierror-translate-rename-state-invalid": "Yeniden adlandırma için iletilen iletilerden biri yeni eklenmeli ve diğeri silinmelidir. Mevcut durumlar - ek: $1 ve silme: $2.",
 	"apiwarn-translate-alreadyreviewedbyyou": "Zaten sizin tarafınızdan incelenmiş olarak işaretlendi",
 	"apiwarn-translate-language-disabled-source": "Bu grubun kaynak dili $1. Lütfen çevrilecek başka bir dil seçin.",
-	"apierror-translate-operation-error": "İstek işlenirken bir hata oluştu. Hata: $1"
+	"apierror-translate-operation-error": "İstek işlenirken bir hata oluştu. Hata: $1",
+	"apihelp-translationentitysearch-summary": "Mesaj gruplarını ve mesajları arayın",
+	"apihelp-translationentitysearch-param-query": "Arama sorgusu",
+	"apihelp-translationentitysearch-param-limit": "Maksimum arama sonucu sayısı"
 }

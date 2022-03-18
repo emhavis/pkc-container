@@ -60,7 +60,9 @@ class PageTranslationHooks {
 				$text = $parserOutput->sourcePageTextForRendering(
 					$wikitextParser->getTargetLanguage()
 				);
-				$wikitextParser->getOutput()->addModuleStyles( 'ext.translate' );
+				$wikitextParser->getOutput()->addModuleStyles( [
+					'ext.translate',
+				] );
 			} catch ( ParsingFailure $e ) {
 				wfDebug( 'ParsingFailure caught; expected' );
 			}
@@ -133,7 +135,6 @@ class PageTranslationHooks {
 	 * This sets &$revRecord to the revision of transcluded page translation if it exists,
 	 * or sets it to the source language if the page translation does not exist.
 	 * The page translation is chosen based on language of the source page.
-	 * Used in MW >= 1.36
 	 *
 	 * Hook: BeforeParserFetchTemplateRevisionRecord
 	 * @param LinkTarget|null $contextLink
@@ -263,7 +264,7 @@ class PageTranslationHooks {
 				$out->addModules( 'ext.translate.pagetranslation.uls' );
 			}
 
-			if ( $isSource && TranslateUtils::isEditPage( $out->getContext()->getRequest() ) ) {
+			if ( $isSource ) {
 				// Adding a help notice
 				$out->addModuleStyles( 'ext.translate.edit.documentation.styles' );
 				$out->addModules( 'ext.translate.edit.documentation' );
@@ -336,7 +337,7 @@ class PageTranslationHooks {
 		$job->setUser( $user );
 		$job->setSummary( $summary );
 		$job->setFlags( $flags );
-		JobQueueGroup::singleton()->push( $job );
+		TranslateUtils::getJobQueueGroup()->push( $job );
 
 		// Invalidate caches so that language bar is up-to-date
 		$pages = $page->getTranslationPages();
@@ -490,7 +491,9 @@ class PageTranslationHooks {
 		);
 		$out .= Html::closeElement( 'div' );
 
-		$parser->getOutput()->addModuleStyles( 'ext.translate.tag.languages' );
+		$parser->getOutput()->addModuleStyles( [
+			'ext.translate.tag.languages',
+		] );
 
 		return $out;
 	}

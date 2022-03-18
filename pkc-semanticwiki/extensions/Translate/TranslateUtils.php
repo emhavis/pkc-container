@@ -8,7 +8,6 @@
  */
 
 use MediaWiki\MediaWikiServices;
-use MediaWiki\Permissions\Authority;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\SlotRecord;
 
@@ -472,6 +471,7 @@ class TranslateUtils {
 		// MW >=1.36
 		return PHP_SAPI === 'cli' ||
 			RequestContext::getMain()->getRequest()->wasPosted() ||
+			// @phan-suppress-next-line PhanUndeclaredMethod
 			$lb->hasOrMadeRecentMasterChanges();
 	}
 
@@ -540,79 +540,6 @@ class TranslateUtils {
 		return $namespaceInfo->hasSubpages( $title->getNamespace() );
 	}
 
-	public static function isEditPage( WebRequest $request ): bool {
-		$veAction = $request->getVal( 'veaction' );
-		if ( $veAction ) {
-			return true;
-		}
-
-		$action = $request->getVal( 'action' );
-		return $action === 'edit';
-	}
-
-	/**
-	 * Wrapper around WikiPage::doEditContent() or WikiPage::doUserEditContent(),
-	 * depending on the version. The Translate extenion supports MediaWiki 1.35+
-	 * but ::doUserEditContent() is only available in 1.36. Once only 1.36+ is
-	 * required this should be replaced with using ::doUserEditContent() directly
-	 *
-	 * @see WikiPage::doEditContent()
-	 * @see WikiPage::doUserEditContent()
-	 *
-	 * The defaults for the parameters here match the defaults for both of the
-	 * WikiPage methods, and the parameter order here matches that of
-	 * ::doUserEditContent(). This function requires a Authority even though
-	 * ::doEditContent() does not, because that falls back to the global $wgUser.
-	 *
-	 * @param WikiPage $wikiPage
-	 * @param Content $content
-	 * @param Authority $user for versions before 1.36 when Authority didn't exist, use a
-	 *    User object
-	 * @param string|CommentStoreComment $summary
-	 * @param int $flags
-	 * @param bool|int $originalRevId
-	 * @param array|null $tags
-	 * @param int $undidRevId
-	 * @return Status
-	 */
-	public static function doPageEdit(
-		WikiPage $wikiPage,
-		Content $content,
-		$user,
-		$summary,
-		$flags = 0,
-		$originalRevId = false,
-		$tags = [],
-		$undidRevId = 0
-	) {
-		if ( method_exists( $wikiPage, 'doUserEditContent' ) ) {
-			// MW 1.36+
-			return $wikiPage->doUserEditContent(
-				$content,
-				$user,
-				$summary,
-				$flags,
-				$originalRevId,
-				$tags,
-				$undidRevId
-			);
-		}
-
-		// MW 1.35
-		// Note: doEditContent() has an extra parameter, $serialFormat, but that has been
-		// ignored since 1.32.
-		return $wikiPage->doEditContent(
-			$content,
-			$summary,
-			$flags,
-			$originalRevId,
-			$user,
-			null, // $serialFormat
-			$tags,
-			$undidRevId
-		);
-	}
-
 	/**
 	 * Checks whether a language code is supported for translation at the wiki level.
 	 * Note that it is possible that message groups define other language codes which
@@ -627,4 +554,15 @@ class TranslateUtils {
 		return isset( $all[ $code ] );
 	}
 
+	/**
+	 * Helper class to provide backward compatibility
+	 * @return JobQueueGroup
+	 */
+	public static function getJobQueueGroup(): JobQueueGroup {
+		if ( method_exists( MediaWikiServices::class, 'getJobQueueGroup' ) ) {
+			// MW 1.37+
+			return MediaWikiServices::getInstance()->getJobQueueGroup();
+		}
+		return JobQueueGroup::singleton();
+	}
 }

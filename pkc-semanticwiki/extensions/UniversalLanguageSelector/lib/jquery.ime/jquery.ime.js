@@ -1,6 +1,6 @@
-/*! jquery.ime - v0.2.0+20211011
+/*! jquery.ime - v0.2.0+20220118
 * https://github.com/wikimedia/jquery.ime
-* Copyright (c) 2021 Santhosh Thottingal; License: (GPL-2.0-or-later OR MIT) */
+* Copyright (c) 2022 Santhosh Thottingal; License: (GPL-2.0-or-later OR MIT) */
 ( function ( $ ) {
 	'use strict';
 
@@ -1640,6 +1640,10 @@
 			name: 'Afrikaans tilde',
 			source: 'rules/af/af-tilde.js'
 		},
+		'ajg-tilde': {
+			name: 'Aja tilde',
+			source: 'rules/ajg/ajg-tilde.js'
+		},
 		'ak-qx': {
 			name: 'Akan QX replacement',
 			source: 'rules/ak/ak-qx.js'
@@ -1749,7 +1753,7 @@
 			source: 'rules/bn/bn-inscript2.js'
 		},
 		'bn-nkb': {
-			name: 'ন্যাশনাল কিবোর্ড',
+			name: 'জাতীয় কিবোর্ড',
 			source: 'rules/bn/bn-nkb.js'
 		},
 		'bn-probhat': {
@@ -2170,6 +2174,10 @@
 			name: 'ইনস্ক্ৰিপ্ট ২',
 			source: 'rules/mni/mni-inscript2.js'
 		},
+		'mnw-simplified-anonta': {
+			name: 'Mon Simplified Anonta',
+			source: 'rules/mnw/mnw-simplified-anonta.js'
+		},
 		'mr-inscript': {
 			name: 'मराठी लिपी',
 			source: 'rules/mr/mr-inscript.js'
@@ -2225,6 +2233,10 @@
 		'nia-tilde': {
 			name: 'Li Niha tilde',
 			source: 'rules/nia/nia-tilde.js'
+		},
+		'nmz-tilde': {
+			name: 'Nawdm tilde',
+			source: 'rules/nmz/nmz-tilde.js'
 		},
 		'nqo-standard-qwerty': {
 			name: "N'Ko standard QWERTY",
@@ -2521,6 +2533,10 @@
 		ahr: {
 			autonym: 'अहिराणी',
 			inputmethods: [ 'mr-transliteration', 'mr-inscript' ]
+		},
+		ajg: {
+			autonym: 'ajagbe',
+			inputmethods: [ 'ajg-tilde' ]
 		},
 		ak: {
 			autonym: 'Akan',
@@ -2862,6 +2878,10 @@
 			autonym: 'Manipuri',
 			inputmethods: [ 'mni-inscript2' ]
 		},
+		mnw: {
+			autonym: 'ဘာသာ မန်',
+			inputmethods: [ 'mnw-simplified-anonta' ]
+		},
 		mr: {
 			autonym: 'मराठी',
 			inputmethods: [ 'mr-transliteration', 'mr-inscript2', 'mr-inscript', 'mr-phonetic' ]
@@ -2885,6 +2905,10 @@
 		nia: {
 			autonym: 'li niha',
 			inputmethods: [ 'nia-tilde' ]
+		},
+		nmz: {
+			autonym: 'nawdm',
+			inputmethods: [ 'nmz-tilde' ]
 		},
 		nn: {
 			autonym: 'Norsk (nynorsk)',

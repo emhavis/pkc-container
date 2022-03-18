@@ -18,7 +18,14 @@
  * @license MIT
  */
 
+namespace UniversalLanguageSelector\Api;
+
+use ApiBase;
+use ApiMain;
+use DeferredUpdates;
+use MediaWiki\Languages\LanguageNameUtils;
 use MediaWiki\User\UserOptionsManager;
+use Wikimedia\ParamValidator\ParamValidator;
 
 /**
  * @ingroup API
@@ -26,19 +33,24 @@ use MediaWiki\User\UserOptionsManager;
 class ApiULSSetLanguage extends ApiBase {
 	/** @var UserOptionsManager */
 	private $userOptionsManager;
+	/** @var LanguageNameUtils */
+	private $languageNameUtils;
 
 	/**
 	 * @param ApiMain $main
 	 * @param string $action
 	 * @param UserOptionsManager $userOptionsManager
+	 * @param LanguageNameUtils $languageNameUtils
 	 */
 	public function __construct(
 		ApiMain $main,
 		$action,
-		UserOptionsManager $userOptionsManager
+		UserOptionsManager $userOptionsManager,
+		LanguageNameUtils $languageNameUtils
 	) {
 		parent::__construct( $main, $action );
 		$this->userOptionsManager = $userOptionsManager;
+		$this->languageNameUtils = $languageNameUtils;
 	}
 
 	public function execute() {
@@ -48,7 +60,7 @@ class ApiULSSetLanguage extends ApiBase {
 		}
 
 		$languageCode = $request->getText( 'languagecode' );
-		if ( !Language::isSupportedLanguage( $languageCode ) ) {
+		if ( !$this->languageNameUtils->isSupportedLanguage( $languageCode ) ) {
 			$this->dieWithError(
 				[ 'apierror-invalidlang', $this->encodeParamName( 'languagecode' ) ]
 			);
@@ -72,7 +84,6 @@ class ApiULSSetLanguage extends ApiBase {
 		}
 
 		$updateUser = $user->getInstanceForUpdate();
-		// @phan-suppress-next-line SecurityCheck-SQLInjection False positive caused by T290563
 		$this->userOptionsManager->setOption( $updateUser, 'language', $languageCode );
 		// Sync the DB on post-send
 		DeferredUpdates::addCallableUpdate( static function () use ( $updateUser ) {
@@ -83,7 +94,7 @@ class ApiULSSetLanguage extends ApiBase {
 	public function getAllowedParams() {
 		return [
 			'languagecode' => [
-				ApiBase::PARAM_REQUIRED => true,
+				ParamValidator::PARAM_REQUIRED => true,
 			]
 		];
 	}

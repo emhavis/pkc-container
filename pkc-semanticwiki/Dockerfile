@@ -1,5 +1,5 @@
-# FROM mediawiki:1.37
-FROM mediawiki:1.35.3
+FROM mediawiki:1.37.1
+# FROM mediawiki:1.35.3
 # FROM mediawiki:latest
 
 # Define the ResourceBasePath in MediaWiki as a variable name: ResourceBasePath
@@ -73,7 +73,8 @@ COPY ./extensions/PdfHandler/ ${ResourceBasePath}/extensions/PdfHandler/
 COPY ./extensions/PDFEmbed/ ${ResourceBasePath}/extensions/PDFEmbed/
 
 # Copy PDFEmbed package to extensions/
-COPY ./extensions/EmbedVideo/ ${ResourceBasePath}/extensions/EmbedVideo/
+# COPY ./extensions/EmbedVideo/ ${ResourceBasePath}/extensions/EmbedVideo/
+# incompatible with MW 1.37.1
 
 # Copy the BackupAndRestore scripting package to MediaWiki's "extensions/" directory
 COPY ./extensions/BackupAndRestore/ ${ResourceBasePath}/extensions/BackupAndRestore/
@@ -205,6 +206,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 # Copy MW-OAuth2Client package to extensions/
 COPY ./extensions/MW-OAuth2Client/ ${ResourceBasePath}/extensions/MW-OAuth2Client/
+
 # Go to the ${ResourceBasePath}/extensions/MW-OAuth2Client/vendors/oauth2-client to install oauth-client
 WORKDIR ${ResourceBasePath}/extensions/MW-OAuth2Client/vendors/oauth2-client
 RUN chmod a+rw ${ResourceBasePath}/extensions/MW-OAuth2Client/vendors/oauth2-client
@@ -221,7 +223,7 @@ RUN composer install
 COPY ./composer.local.json ${ResourceBasePath}/composer.local.json
 
 WORKDIR ${ResourceBasePath}
-RUN composer install
+RUN composer install  
 RUN composer update --no-dev
 
 # PluggableAuth
@@ -233,9 +235,8 @@ COPY ./extensions/OpenIDConnect ${ResourceBasePath}/extensions/OpenIDConnect
 WORKDIR ${ResourceBasePath}/extensions/OpenIDConnect
 RUN composer install
 
-# Add LUA Semantics Scribunto
-
-
+# Content Translation
+COPY ./extensions/ContentTranslation ${ResourceBasePath}/extensions/ContentTranslation
 
 # Go to the ${ResourceBasePath} for working directory
 WORKDIR ${ResourceBasePath}

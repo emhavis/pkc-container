@@ -7,6 +7,8 @@
  * @license GPL-2.0-or-later
  */
 
+use MediaWiki\Extension\Translate\MessageProcessing\ArrayFlattener;
+
 /**
  * JsonFFS implements a message format where messages are encoded
  * as key-value pairs in JSON objects. The format is extended to
@@ -79,8 +81,6 @@ class JsonFFS extends SimpleFFS {
 		$authors = $this->filterAuthors( $collection->getAuthors(), $collection->getLanguage() );
 		$messages = [];
 
-		$mangler = $this->group->getMangler();
-
 		/** @var TMessage $m */
 		foreach ( $collection as $key => $m ) {
 			$value = $m->translation();
@@ -92,7 +92,6 @@ class JsonFFS extends SimpleFFS {
 				$value = str_replace( TRANSLATE_FUZZY, '', $value );
 			}
 
-			$key = $mangler->unmangle( $key );
 			$messages[$key] = $value;
 		}
 
@@ -115,9 +114,13 @@ class JsonFFS extends SimpleFFS {
 			$messages = $this->flattener->unflatten( $messages );
 		}
 
+		$mangler = $this->group->getMangler();
+		$messages = $mangler->unmangleArray( $messages );
+
 		if ( $this->extra['includeMetadata'] ?? true ) {
 			$metadata = $template['EXTRA']['METADATA'] ?? [];
 			$metadata['authors'] = $authors;
+
 			$messages = [ '@metadata' => $metadata ] + $messages;
 		}
 

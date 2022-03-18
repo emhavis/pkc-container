@@ -9,17 +9,6 @@
 		// indexed by language code
 		languagestats: {},
 
-		/**
-		 * Checks if the input placeholder attribute
-		 * is supported on this element in this browser.
-		 *
-		 * @param {jQuery} $element
-		 * @return {boolean}
-		 */
-		isPlaceholderSupported: function ( $element ) {
-			return ( 'placeholder' in $element[ 0 ] );
-		},
-
 		// Storage for language stats loader functions from API,
 		// indexed by language code
 		languageStatsLoader: {},
@@ -171,6 +160,25 @@
 			return mw.translate.dirty ||
 				// Previous editors has some unsaved edits
 				$( '.tux-status-unsaved' ).length;
+		},
+
+		/**
+		 * Return the language details for usage in HTML attributes
+		 *
+		 * @param {string} languageCode
+		 * @return {Object}
+		 */
+		getLanguageDetailsForHtml: function ( languageCode ) {
+			var languageCodeForHtml = languageCode;
+			if ( languageCode === mw.config.get( 'wgTranslateDocumentationLanguageCode' ) ) {
+				languageCodeForHtml = mw.config.get( 'wgContentLanguage' );
+			}
+
+			return {
+				code: languageCodeForHtml,
+				direction: $.uls.data.getDir( languageCodeForHtml ),
+				autonym: $.uls.data.getAutonym( languageCode )
+			};
 		}
 	} );
 

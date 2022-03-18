@@ -72,10 +72,6 @@
 				messageTable.scroll();
 			} ) );
 
-			if ( mw.translate.isPlaceholderSupported( $filterInput ) ) {
-				$filterInput.prop( 'placeholder', mw.msg( 'tux-message-filter-placeholder' ) );
-			}
-
 			$filterInput.on( 'input', $.debounce( 250, function () {
 				messageTable.search( $filterInput.val() );
 			} ) );
@@ -533,10 +529,6 @@
 					// End of messages
 					self.$loader.data( 'offset', -1 )
 						.addClass( 'hide' );
-
-					// Helpfully open the first message in show mode
-					// TODO: Refactor to avoid direct DOM access
-					$( '.tux-message-item' ).first().trigger( 'click' );
 				} else {
 					self.$loader.data( 'offset', result[ 'query-continue' ].messagecollection.mcoffset );
 
@@ -548,6 +540,13 @@
 
 					// Make sure the floating toolbars are visible without the need for scroll
 					$( window ).trigger( 'scroll' );
+				}
+
+				// Helpfully open the first message in show mode on page load
+				// But do not open it if we are at the bottom of the page waiting for more translation units
+				if ( self.messages.length <= pageSize ) {
+					// TODO: Refactor to avoid direct DOM access
+					$( '.tux-message-item' ).first().trigger( 'click' );
 				}
 
 				self.updateHideOwnInProofreadingToggleVisibility();

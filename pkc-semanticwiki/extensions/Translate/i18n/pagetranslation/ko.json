@@ -11,6 +11,7 @@
 			"Priviet",
 			"Revi",
 			"Tyey",
+			"Underbaaar",
 			"Ykhwong",
 			"렌즈",
 			"아라"
@@ -19,6 +20,7 @@
 	"pagetranslation": "문서 번역",
 	"right-pagetranslation": "문서의 판을 번역하도록 표시",
 	"action-pagetranslation": "번역 가능한 문서 관리",
+	"tps-edit-sourcepage-text": "번역의 원본 문서를 편집하고 있습니다. 다음 문서를 숙지하십시오.\n\n* [https://www.mediawiki.org/wiki/Special:MyLanguage/Help:Extension:Translate/Page_translation_administration#Changing_the_source_text 원본 글귀를 수정하기]\n* [https://www.mediawiki.org/wiki/Special:MyLanguage/Help:Extension:Translate/Page_translation_administration#Markup_examples 사용할 마크업 예제]",
 	"tps-edit-sourcepage-ve-warning-title": "경고: 지원하지 않는 페이지",
 	"tps-edit-sourcepage-ve-warning-button": "확인",
 	"tpt-section": "번역 단위 $1",
@@ -90,6 +92,7 @@
 	"aggregategroups": "집계 그룹",
 	"tpt-aggregategroup-add": "추가",
 	"tpt-aggregategroup-save": "저장",
+	"tpt-aggregategroup-close": "닫기",
 	"tpt-aggregategroup-add-new": "새 집계 그룹 추가",
 	"tpt-aggregategroup-new-name": "이름:",
 	"tpt-aggregategroup-new-description": "설명 (선택):",
@@ -99,6 +102,10 @@
 	"tpt-aggregategroup-edit-description": "설명:",
 	"tpt-aggregategroup-update": "저장",
 	"tpt-aggregategroup-update-cancel": "취소",
+	"tpt-aggregategroup-expand-all-groups": "모든 그룹 펼치기",
+	"tpt-aggregategroup-collapse-all-groups": "모든 그룹 접기",
+	"tpt-aggregategroup-expand-group": "그룹 펼치기",
+	"tpt-aggregategroup-collapse-group": "그룹 접기",
 	"tpt-invalid-group": "잘못된 그룹",
 	"pt-parse-open": "불균형한 &lt;translate> 태그입니다.\n번역 틀: <pre>$1</pre>",
 	"pt-parse-close": "불균형한 &lt;/translate> 태그입니다.\n번역 틀: <pre>$1</pre>",
@@ -190,6 +197,7 @@
 	"pm-delete-icon-hover-text": "단위 삭제",
 	"pm-pagetitle-invalid": "올바른 문서 제목을 입력하세요. <page-name>/<language-code> 형식이어야 합니다.",
 	"pm-langcode-missing": "언어 코드가 제목에 없는 것 같습니다. <page-name>/<language-code> 형식으로 문서 제목을 입력해 주십시오.",
+	"pm-pagetitle-not-translatable": "$1 문서는 번역 가능한 문서의 일부가 아닙니다.",
 	"tpt-translate-title": "문서 제목을 번역할 수 있음",
 	"pagepreparation": "문서를 번역할 수 있게 준비",
 	"pagepreparation-summary": "번역 준비를 위한 문서 제목을 지정합니다.",
@@ -202,5 +210,6 @@
 	"pp-pagename-missing": "문서 이름을 입력하세요.",
 	"pp-diff-old-header": "원래 텍스트",
 	"tpt-unlink-button": "번역에서 제거",
-	"tpt-unlink-summary": "번역에서 문서 제거"
+	"tpt-unlink-summary": "번역에서 문서 제거",
+	"visualeditor-annotations-translate-description": "이 항목은 번역이 가능하도록 분류되었습니다. [https://www.mediawiki.org/wiki/Help:Extension:Translate/Page_translation_administration#Changing_the_source_text changing the source text]에서 편집방침을 확인해 주십시오."
 }
