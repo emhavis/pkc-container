@@ -1,34 +1,32 @@
-FROM registry.access.redhat.com/ubi8-minimal AS build-env
+FROM docker.io/bitnami/minideb:buster
+LABEL maintainer "Bitnami <containers@bitnami.com>"
 
-ENV KEYCLOAK_VERSION 17.0.0-SNAPSHOT
-ARG KEYCLOAK_DIST=https://github.com/keycloak/keycloak/releases/download/$KEYCLOAK_VERSION/keycloak-$KEYCLOAK_VERSION.tar.gz
+ENV HOME="/" \
+    OS_ARCH="amd64" \
+    OS_FLAVOUR="debian-10" \
+    OS_NAME="linux"
 
-RUN microdnf install -y tar gzip
+ARG JAVA_EXTRA_SECURITY_DIR="/bitnami/java/extra-security"
 
-ADD $KEYCLOAK_DIST /tmp/keycloak/
+COPY prebuildfs /
+# Install required system packages and dependencies
+RUN install_packages acl ca-certificates curl gzip libaio1 libc6 procps rsync tar zlib1g
+RUN . /opt/bitnami/scripts/libcomponent.sh && component_unpack "wait-for-port" "1.0.1-10" --checksum 35c818ba3f4b5aae905959bc7d3a5e81fc63786e3c662b604612c0aa7fcda8fd
+RUN . /opt/bitnami/scripts/libcomponent.sh && component_unpack "java" "11.0.14-7" --checksum 900545c4f346a0ece8abf2caf64fd9d4ab7514967d4614d716bf7362b24f828b
+RUN . /opt/bitnami/scripts/libcomponent.sh && component_unpack "keycloak" "16.1.1-8" --checksum c432a2b3551a40e48b77f63257def52e9556c2b6ffa989e7eb6847ad87fdd9db
+RUN . /opt/bitnami/scripts/libcomponent.sh && component_unpack "gosu" "1.14.0-7" --checksum d6280b6f647a62bf6edc74dc8e526bfff63ddd8067dcb8540843f47203d9ccf1
+RUN apt-get update && apt-get upgrade -y && \
+    rm -r /var/lib/apt/lists /var/cache/apt/archives
+RUN chmod g+rwX /opt/bitnami
 
-# The next step makes it uniform for local development and upstream built.
-# If it is a local tar archive then it is unpacked, if from remote is just downloaded.
-RUN (cd /tmp/keycloak && \
-    tar -xvf /tmp/keycloak/keycloak-*.tar.gz && \
-    rm /tmp/keycloak/keycloak-*.tar.gz) || true
+COPY rootfs /
+RUN /opt/bitnami/scripts/java/postunpack.sh
+RUN /opt/bitnami/scripts/keycloak/postunpack.sh
+ENV APP_VERSION="16.1.1" \
+    BITNAMI_APP_NAME="keycloak" \
+    JAVA_HOME="/opt/bitnami/java" \
+    PATH="/opt/bitnami/common/bin:/opt/bitnami/java/bin:/opt/bitnami/keycloak/bin:$PATH"
 
-RUN mv /tmp/keycloak/keycloak-* /opt/keycloak
-
-FROM registry.access.redhat.com/ubi8-minimal
-
-COPY --from=build-env /opt/keycloak /opt/keycloak
-
-RUN microdnf update -y && \
-    microdnf install -y java-11-openjdk-headless && microdnf clean all && rm -rf /var/cache/yum/* && \
-    echo "keycloak:x:0:root" >> /etc/group && \
-    echo "keycloak:x:1000:0:keycloak user:/opt/keycloak:/sbin/nologin" >> /etc/passwd && \
-    chown -R keycloak:root /opt/keycloak && \
-    chmod -R g+rwX /opt/keycloak
-
-USER 1000
-
-EXPOSE 8080
-EXPOSE 8443
-
-ENTRYPOINT [ "/opt/keycloak/bin/kc.sh" ]
+USER 1001
+ENTRYPOINT [ "/opt/bitnami/scripts/keycloak/entrypoint.sh" ]
+CMD [ "/opt/bitnami/scripts/keycloak/run.sh" ]
