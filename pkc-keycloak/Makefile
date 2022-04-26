@@ -1,7 +1,7 @@
 CURRENT_TIME = $(shell date +'%y.%m.%d %H:%M:%S')
 CURRENT_TAG = "v0.1"
 
-build: 
+build:
 	docker build --no-cache -t emhavis/pkc_keycloak:${CURRENT_TAG} .
 
 buildAndPush:
@@ -11,10 +11,10 @@ buildAndPush:
 push:
 	docker push emhavis/pkc_keycloak:${CURRENT_TAG}
 
-build_no_cache: 
+build_no_cache:
 	docker build --no-cache -t emhavis/pkc_keycloak:${CURRENT_TAG} .
 
-push_no_cache: 
+push_no_cache:
 	docker push emhavis/pkc_keycloak:v0.6
 
 commitToGitHub:
@@ -23,7 +23,7 @@ commitToGitHub:
 	git push
 
 buildMulti:
-	docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6 -t emhavis/pkc_keycloak:${CURRENT_TAG} --push . 
+	docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6 -t emhavis/pkc_keycloak:${CURRENT_TAG} --push .
 
 buildMultiLocal:
 	docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6 -t localhost:5000/pkc_keycloak:${CURRENT_TAG} --push .
