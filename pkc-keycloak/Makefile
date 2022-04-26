@@ -2,14 +2,10 @@ CURRENT_TIME = $(shell date +'%y.%m.%d %H:%M:%S')
 CURRENT_TAG = "v0.1"
 
 build: 
-	docker build -t emhavis/pkc_keycloak:${CURRENT_TAG} .
+	docker build --no-cache -t emhavis/pkc_keycloak:${CURRENT_TAG} .
 
 buildAndPush:
-	docker build -t emhavis/pkc_keycloak:${CURRENT_TAG} .
-	docker push emhavis/pkc_keycloak:${CURRENT_TAG}
-
-buildAndPushSMW: 
-	docker build -t emhavis/pkc_keycloak:${CURRENT_TAG} .
+	docker build --no-cache -t emhavis/pkc_keycloak:${CURRENT_TAG} .
 	docker push emhavis/pkc_keycloak:${CURRENT_TAG}
 
 push:
