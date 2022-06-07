@@ -27,7 +27,7 @@ commitToGitHub:
 	git push
 
 buildMulti:
-	docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6 -t emhavis/pkc_mariadb:${CURRENT_TAG} --push . 
+	docker buildx build --platform linux/amd64,linux/arm64 -t emhavis/pkc_mariadb:${CURRENT_TAG} --push . 
 
 buildMultiLocal:
 	docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6 -t localhost:5000/pkc_mariadb:${CURRENT_TAG} --push .

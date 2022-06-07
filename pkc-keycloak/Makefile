@@ -13,7 +13,7 @@ push:
 
 build_no_cache:
 	docker build --no-cache -t emhavis/pkc_keycloak:${CURRENT_TAG} .
-
+	
 push_no_cache:
 	docker push emhavis/pkc_keycloak:v0.6
 
